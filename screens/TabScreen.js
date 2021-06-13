@@ -3,22 +3,25 @@ import SecondScreen from './SecondScreen'
 import TicketScr from './TicketCreateScreen'
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Icon2 from 'react-native-vector-icons/Ionicons';
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import React from 'react';
 
+
 const Tab = createMaterialBottomTabNavigator();
 
-export default function MyTabs() {
+export default function MyTabs(props) {
+  
+  let admin = props.admin;
   return (
     <Tab.Navigator
       initialRouteName="Acceuil"
       activeColor="#fff"
-      barStyle={{ backgroundColor: '#009387' }}
+      barStyle={{ backgroundColor: '#009387' , }}
     >
       <Tab.Screen
         name="Acceuil"
-        component={HomeScreen}
+        children = { () => <HomeScreen {...props} admin = {admin} />}
         options={{
           tabBarLabel: 'Acceuil',
           tabBarIcon: ({ color }) => (
@@ -26,23 +29,24 @@ export default function MyTabs() {
           ),
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Second"
         component={SecondScreen}
+        
         options={{
           tabBarLabel: 'Panneau de configuration',
           tabBarIcon: ({ color }) => (
             <MaterialIcons name="admin-panel-settings" color={color} size={26} />
           ),
         }}
-      />
+      /> */}
       <Tab.Screen
         name="Ticket"
         component={TicketScr}
         options={{
-          tabBarLabel: 'Déclarer Problème',
+          tabBarLabel: 'Créer Ticket',
           tabBarIcon: ({ color }) => (
-            <Icon name="exclamation-circle"  color={color} size={26} />
+            <Icon2 name="create"  color={color} size={26} />
           ),
         }}
       />

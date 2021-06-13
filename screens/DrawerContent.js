@@ -1,5 +1,5 @@
 import { StyleSheet, View  } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { DrawerItem , DrawerContentScrollView } from '@react-navigation/drawer';
 import {
     useTheme,
@@ -17,21 +17,25 @@ import Icon2 from 'react-native-vector-icons/Ionicons'
 import{ AuthContext } from '../components/Context';
 
 
-    
 
 
 
 export function DContent (props) {
-  const user = {
-    admin : true
-  }
-  const {signOut} = React.useContext(AuthContext);
+
+  //console.log (' admin is '+props.admin);
+
+  const {signOut , admin} = React.useContext(AuthContext);
     const paperTheme = useTheme();
-    //const { toggleTheme } = React.useContext(AuthContext);
     const [isDarkTheme, setIsDarkTheme] = useState(false);
     const toggleTheme = () => {
-        setIsDarkTheme(!isDarkTheme);
+      admin(!props.admin);
+       
     }
+    useEffect ( () => {
+      setIsDarkTheme(props.admin)
+    
+    }, [props.admin])
+    
     return (
         <View style = {{flex:1}}>
           <DrawerContentScrollView  {...props}>
@@ -87,7 +91,7 @@ export function DContent (props) {
                             onPress={() => {props.navigation.navigate('Acceuil')}}
                         />
                         {
-                          user.admin ? 
+                          props.admin ? 
                           <View>
                               <DrawerItem 
                             icon={({color, size}) => (
@@ -98,7 +102,18 @@ export function DContent (props) {
                                 />
                             )}
                             label="Ajouter Client"
-                            onPress={() => {props.navigation.navigate('SignUpScreen')}}
+                            onPress={() => {props.navigation.navigate('AddClient')}}
+                        />
+                         <DrawerItem 
+                            icon={({color, size}) => (
+                                <Icon
+                                name="account-plus-outline" 
+                                color={color}
+                                size={size}
+                                />
+                            )}
+                            label="Ajouter Employé"
+                            onPress={() => {props.navigation.navigate('AddEmploye')}}
                         />
                         <DrawerItem 
                             icon={({color, size}) => (
@@ -109,7 +124,18 @@ export function DContent (props) {
                                 />
                             )}
                             label="Liste des Clients"
-                            onPress={() => {props.navigation.navigate('SignUpScreen')}}
+                            onPress={() => {props.navigation.navigate('ListClient')}}
+                        />
+                        <DrawerItem 
+                            icon={({color, size}) => (
+                                <Icon
+                                name="account-multiple-outline" 
+                                color={color}
+                                size={size}
+                                />
+                            )}
+                            label="Liste des Employés"
+                            onPress={() => {props.navigation.navigate('ListEmploye')}}
                         />
                           </View>
                          : null

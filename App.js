@@ -11,7 +11,12 @@ import { set } from 'react-native-reanimated';
 import {AuthContext} from './components/Context';
 import ProfileScreen from './screens/ProfileScreen';
 import SignUpScreen from './screens/SignUpScreen';
-
+import ClientListScreen from './screens/ListeClient';
+import EmployeListScreen from './screens/ListEmploye';
+import AddEmploye from './screens/addEmploye';
+import AddClient from './screens/addClient';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {initialState} from './components/State';
 
 
 
@@ -24,16 +29,8 @@ const Drawer = createDrawerNavigator();
 
 export default function App() {
 
-//   const [isLoading , setIsLoading] = React.useState(true);
-// const [userToken , setUserToken] = React.useState(null);
-
   //--------------global state---------------------
- const initialState =  {
-    isLoading : true ,
-    userToken : null , 
-    userName : null , 
 
-}
 const  loginReducer = (state ,action) => {
   switch (action.type){
       case 'retreive-token' : return ({...state , userToken : action.token});
@@ -42,6 +39,7 @@ const  loginReducer = (state ,action) => {
       case 'login-fail' : return ({ ...state , isLoading : false , userToken : null});
       case 'register' : return ({ ... state , isLoading : false  , userToken: action.token , userName : action.name});
       case 'logout' : return ({...state , userToken : null , userName: null });
+      case 'admin': return ({...state , admin : action.admin})
       default : return state;
       
   }
@@ -51,9 +49,9 @@ const  loginReducer = (state ,action) => {
   //-------------------------------------------
  
   //----------------------------------------------
-  const [loginState , dispatch] = React.useReducer(loginReducer, initialState)
+  const [loginState , dispatch] = React.useReducer(loginReducer, initialState);
   const authContext = React.useMemo(() => ({
-    signIn:(userName , password ) => {
+    signIn:async(userName , password ) => {
       let userToken ; 
       if (userName == 'mehdi' && password == 'bedoud'){
         userToken = 'hey';
@@ -62,25 +60,36 @@ const  loginReducer = (state ,action) => {
           token : userToken,
           name: userName,
         })
+       await AsyncStorage.setItem('userToken' , userToken);
       }
       else{
         alert('nom d\'utilisateur ou mot de passe incorrecte');
       }
       
     },
-    signOut: () => {
+    signOut: async() => {
      dispatch({type : 'logout'})
+     await AsyncStorage.removeItem('userToken');
+
     },
     signUp: () => {
    
     },
+    admin : (bool)=> {
+      dispatch({type : 'admin' , admin : bool })
+    },
+    adminn : loginState.admin,
+
+   
   }));
   //--------------------useEffect-----------------
 
   useEffect(() => {
-   setTimeout(()=>{
+   setTimeout(async()=>{
      loginState.isLoading = false;
-     dispatch({type : 'retreive-token' , token : 'hello'})
+     let userToken = null;
+     userToken = await AsyncStorage.getItem('userToken');
+     dispatch({type : 'retreive-token' , token : userToken})
    },2000 )
 
   }, []);
@@ -102,10 +111,14 @@ if( loginState.isLoading ) {
        !loginState.userToken ? 
     <RootStackk/> 
     :
-  <Drawer.Navigator drawerContent = { props => <DContent { ...props}/>} >
-      <Drawer.Screen name = "MainTab" component={Tabs}/>
+  <Drawer.Navigator drawerContent = { props => <DContent { ...props} admin = {loginState.admin} />}   >
+      <Drawer.Screen   children = { props => <Tabs {...props} admin = {loginState.admin} />}name = "MainTab"  />
       <Drawer.Screen name="Profile" component={ProfileScreen} />
       <Drawer.Screen name="SignUpScreen" component={SignUpScreen} />
+      <Drawer.Screen name="ListClient" component={ClientListScreen} />
+      <Drawer.Screen name="ListEmploye" component={EmployeListScreen} />
+      <Drawer.Screen name="AddClient" component={AddClient} />
+      <Drawer.Screen name="AddEmploye" component={AddEmploye} />
      
     </Drawer.Navigator> 
     }
@@ -122,3 +135,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+

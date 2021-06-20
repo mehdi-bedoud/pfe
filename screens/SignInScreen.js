@@ -45,8 +45,6 @@ const SignInScreen = ({navigation}) => {
         password: '',
         check_textInputChange: false,
         secureTextEntry: true,
-        //isValidUser: true,
-        //isValidPassword: true,
     });
     //--------------------------------------------------
     const textInputChange = (val) => {

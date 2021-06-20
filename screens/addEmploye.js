@@ -26,174 +26,97 @@ import employe from '../classes/employe';
 const AddEmploye = ({navigation}) => {
 
     //--------------------------
-    const [visible , setVisible] = useState(true);
-    const [eyeName,setEyeName] = useState('eye-off');
-    const [eyeColor,setEyeColor] = useState('gray')
-    const isVisible = () => {
-        setVisible(!visible)
-        switch (eyeName){
-            case 'eye' : setEyeName('eye-off');break;
-            case 'eye-off' : setEyeName('eye');break;
-        }
-        switch (eyeColor){
-            case 'gray' : setEyeColor('green');break;
-            case 'green' : setEyeColor('gray');break;
-        }
+    const [name , setName ] = useState('');
+    const [mail , setMail ] = useState('');
+    const [password1 , setPassword1 ] = useState('');
+    const [password2 , setPassword2 ] = useState('');
+    
+    const addUser = ()=>{
+        if (name.length != 0 && mail.length != 0 && password1.length !=0 && password1 == password2)
+        administrateur.addUser({name , mail , password1} , 'client')
     }
-   
-    //----------------------------------------
-    const [data, setData] = React.useState({
-        email: '',
-        password: '',
-        check_textInputChange: false,
-        secureTextEntry: true,
-        //isValidUser: true,
-        //isValidPassword: true,
-    });
-    //--------------------------------------------------
-    const textInputChange = (val) => {
-        if(val.length != 0){
-            setData({
-                ...data,
-                email : val ,
-                check_textInputChange : true,
-
-            })
-
-        }
-        else {
-            setData({
-                ...data,
-                check_textInputChange : false,
-
-            })
-
-        }
-    }
-    // password 
-    const passwordChange = (val) => {
-        if(val.length != 0){
-            setData({
-                ...data,
-                password : val ,
-
-            })
-
-        }
-        else {
-            setData({
-                ...data,
-                check_textInputChange : false,
-
-            })
-
-        }
-    }
-//------------------------------------------------
-
-//------------------------------------------------
-
-    return (
-      <View style={styles.container}>
-          <StatusBar backgroundColor='#009387' barStyle="light-content"/>
-        <View style={styles.header}>
-            <Text style={styles.text_header}>Ajouter Un Employé</Text>
-        </View>
-        <View style ={styles.footer} >
-            <Text>Email</Text>
-            <View style = {styles.action}>
-            <FontAwesome 
-                    name="user-o"
-                    size={20}
-                />
-                <TextInput 
-                   placeholder = 'Entrer votre mail' 
-                   style = {styles.textInput} 
-                   onChangeText = {(val)=>textInputChange(val) }
-                  
-
-                ></TextInput>
-                 <Animatable.View
-                    animation="bounceIn"
-                >
-                    {data.check_textInputChange ?
-                    <Feather 
-                        name="check-circle"
-                        color="green"
+        return (
+          <View style={styles.container}>
+              <StatusBar backgroundColor='#009387' barStyle="light-content"/>
+            <View style={styles.header}>
+                <Text style={styles.text_header}>Ajouter Un Client</Text>
+            </View>
+            <View style ={styles.footer} >
+                <Text>Nom complet</Text>
+                <View style = {styles.action}>
+                <FontAwesome 
+                        name="user-o"
                         size={20}
                     />
-                    :
-                    null}
-                </Animatable.View>
-            </View>
-       {/* mot de passe  */}
-            <Text style ={{marginTop : 35}} >Mot de passe</Text>
-
-            <View style = {styles.action}>
-            <Feather 
-                    name="lock"
-                    size={20}
-                />
-                <TextInput 
-                   placeholder = 'Entrer votre mot de passe' 
-                   secureTextEntry = {visible}
-                   style = {styles.textInput} 
-                   onChangeText = {(val)=>passwordChange(val) }
-                  
-
-                ></TextInput>
-                 <TouchableOpacity onPress = {isVisible}>
-                 <Animatable.View
-                    animation="bounceIn"
-                >
-                    <Feather 
-                        name={eyeName}
-                        color={eyeColor}
+                     <TextInput 
+                       placeholder = 'Entrer le nom complet' 
+                       style = {styles.textInput} 
+                       onChangeText = {(val)=>setName(val) }
+                      
+    
+                    ></TextInput>
+                   
+                     
+                </View>
+                <Text style = {{marginTop : 35}}>Email</Text>
+                <View style = {styles.action}>
+                <FontAwesome 
+                        name="user-o"
                         size={20}
-                       
-                        
                     />
-                </Animatable.View>
-                 </TouchableOpacity>
-            </View>
-            <Text style = {{marginTop : 35}}>Confirmer le mot de passe</Text>
-            <View style = {styles.action}>
-            <Feather 
-                    name="lock"
-                    size={20}
-                />
-                <TextInput 
-                   placeholder = 'Conformer le mot de passe' 
-                   secureTextEntry = {visible}
-                   style = {styles.textInput} 
-                   onChangeText = {(val)=>passwordChange(val) }
-                  
-
-                ></TextInput>
-                 <TouchableOpacity onPress = {isVisible}>
-                 <Animatable.View
-                    animation="bounceIn"
-                >
-                    <Feather 
-                        name={eyeName}
-                        color={eyeColor}
+                     <TextInput 
+                       placeholder = 'Entrer le mail ' 
+                       style = {styles.textInput} 
+                       onChangeText = {(val)=>setMail(val) }
+                      
+    
+                    ></TextInput>
+                   
+                     
+                </View>
+           {/* mot de passe  */}
+                <Text style ={{marginTop : 35}} >Mot de passe</Text>
+    
+                <View style = {styles.action}>
+                <Feather 
+                        name="lock"
                         size={20}
-                       
-                        
                     />
-                </Animatable.View>
-                 </TouchableOpacity>
+                    <TextInput 
+                       placeholder = 'Entrer le mot de passe' 
+                       style = {styles.textInput} 
+                       onChangeText = {(val)=>setPassword1(val) }
+                      
+    
+                    ></TextInput>
+                    
+                </View>
+                <Text style = {{marginTop : 35}}>Confirmer le mot de passe</Text>
+                <View style = {styles.action}>
+                <Feather 
+                        name="lock"
+                        size={20}
+                    />
+                    <TextInput 
+                       placeholder = 'Confirmer le mot de passe' 
+                   
+                       style = {styles.textInput} 
+                       onChangeText = {(val)=>setPassword2(val) }
+                      
+    
+                    ></TextInput>
+                    
+                </View>
+                <View style = {styles.button}>
+                    <TouchableOpacity style= {styles.appButtonContainer} onPress = {addUser()} >
+                        <Text style = {styles.appButtonText }>Ajouter un Client</Text>
+                    </TouchableOpacity>
+                </View >
             </View>
-            <View style = {styles.button}>
-                <TouchableOpacity style= {styles.appButtonContainer}  >
-                    <Text style = {styles.appButtonText }>Ajouter un Employé</Text>
-                </TouchableOpacity>
-            </View >
-        </View>
-        </View>
-        
-     
-    );
+            </View>
+            
+         
+        );
 }
 
 export default AddEmploye;

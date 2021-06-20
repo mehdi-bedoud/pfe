@@ -15,26 +15,26 @@ import {
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import Icon2 from 'react-native-vector-icons/Ionicons'
 import{ AuthContext } from '../components/Context';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
 
 
 export function DContent (props) {
-
+  
   //console.log (' admin is '+props.admin);
 
-  const {signOut , admin} = React.useContext(AuthContext);
+  const {signOut , name , privilege} = React.useContext(AuthContext);
     const paperTheme = useTheme();
     const [isDarkTheme, setIsDarkTheme] = useState(false);
+ 
+
     const toggleTheme = () => {
-      admin(!props.admin);
+     
        
     }
-    useEffect ( () => {
-      setIsDarkTheme(props.admin)
-    
-    }, [props.admin])
+
     
     return (
         <View style = {{flex:1}}>
@@ -48,7 +48,7 @@ export function DContent (props) {
                  size = {50}
                   />
                   <View style = {{marginLeft : 15 , flexDirection: 'column'}}>
-                  <Title style = {styles.title}>Bedoud mahdi</Title>
+                  <Title style = {styles.title}>{name}</Title>
                   <Caption style = {styles.caption}>
                    @mahdi.901
                   </Caption>
@@ -79,7 +79,11 @@ export function DContent (props) {
                             label="Mon Compte"
                             onPress={() => {props.navigation.navigate('Profile')}}
                         />
-                          <DrawerItem 
+                      
+                        {
+                          privilege == 'admin' ? 
+                          <View>
+                                <DrawerItem 
                             icon={({color, size}) => (
                                 <Icon2 
                                 name="settings-outline" 
@@ -87,12 +91,20 @@ export function DContent (props) {
                                 size={size}
                                 />
                             )}
-                            label="Paramètres"
-                            onPress={() => {props.navigation.navigate('Acceuil')}}
+                            label="ajouter Composant"
+                            onPress={() => {props.navigation.navigate('addComposant')}}
                         />
-                        {
-                          props.admin ? 
-                          <View>
+                         <DrawerItem 
+                            icon={({color, size}) => (
+                                <Icon2 
+                                name="settings-outline" 
+                                color={color}
+                                size={size}
+                                />
+                            )}
+                            label="ajouter Produit"
+                            onPress={() => {props.navigation.navigate('addProduit')}}
+                        />
                               <DrawerItem 
                             icon={({color, size}) => (
                                 <Icon

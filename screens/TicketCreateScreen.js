@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
-import {View , Text , StyleSheet ,TextInput} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import {View , Text , StyleSheet ,TextInput, TouchableOpacity} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
+import administrateur from '../classes/administrateur';
+import User from '../classes/User';
 //import TextInput from 'react-native-input-style';
 
 
@@ -8,10 +10,29 @@ import {Picker} from '@react-native-picker/picker';
 
  const TicketScreen =() =>{
      const [title , setTitle ] = useState();
-    const [descrition , setDescrition ] = useState();
+    const [description , setDescription ] = useState();
     const [priorite , setPriorite] = useState();
-    const [selectedValue, setSelectedValue] = useState("petite");
+    const [produits , setProduits] = useState();
+    const [produit , setProduit] = useState();
+    const [composants , setComposants ] = useState();
+    const [composant , setComposant] = useState();
+    const [adresse , setAdress] = useState();
+    const [etat , setEtat] = useState('ouvert');
+
+    const creerTicket = async() => {
+      console.log('ziiit')
+      
+      await User.createTicket(title , description , adresse , produit , composant , etat, priorite)
+
+    }
+
+useEffect( async()=> {
+  setProduits(await administrateur.getAllProducts())
+ 
+} , [])
     return (
+     <>
+    
       <View style = {styles.container}>
       <Text style = {styles.ticketTitle}>Titre : </Text>
         <TextInput 
@@ -28,20 +49,69 @@ import {Picker} from '@react-native-picker/picker';
                   label="Description"
                    placeholder = 'Entrer la description' 
                
-                   onChangeText = {(desc)=>{setDescrition (desc)} }
+                   onChangeText = {(desc)=>{setDescription (desc)} }
             ></TextInput>
+               <Text style = {styles.ticketTitle}>Adresse : </Text>
+  <TextInput 
+             style = {styles.input}
+                  label="Description"
+                   placeholder = "Entrer l'adresse"
+               
+                   onChangeText = {(desc)=>{setAdress (desc)} }
+            ></TextInput>
+            <Text style = {styles.ticketTitle}>Produit : </Text>
+            <Picker
+       selectedValue={produit}
+        style={{ height: 50, width: 150 ,margin : 10,paddingLeft : 10}}
+        onValueChange={async(itemValue) => {
+          setProduit(itemValue)
+          setComposants(await administrateur.getComposants(itemValue))
+     
+        }}
+      >
+        
+       {
+         produits ? 
+         
+           produits.map( (s) => {
+                return <Picker.Item key={s.title} value={s.title} label={s.title} value = {s.title}/>
+            }) : null 
+       }
+      </Picker>
+            <Text style = {styles.ticketTitle}>Composant : </Text>
+            <Picker
+       //  selectedValue={selectedValue}
+        style={{ height: 50, width: 150 ,margin : 10 ,paddingLeft : 10}}
+        onValueChange={(itemValue) => setComposant(itemValue)}
+      >
+          {
+         composants ? 
+         
+           composants.map( (s) => {
+                return <Picker.Item key={s.title} value={s.title} label={s.title} value = {s.title}/>
+            }) : null 
+       }
+      </Picker>
+
            <Text style = {styles.ticketTitle}>Priorité : </Text>
                  <Picker
-        selectedValue={selectedValue}
-        style={{ height: 50, width: 150 ,}}
-        onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
+   
+        style={{ height: 50, width: 150 ,margin : 10,paddingLeft : 10}}
+        onValueChange={(itemValue) => setPriorite(itemValue)}
       >
         <Picker.Item label="petite" value="petite" />
         <Picker.Item label="moyenne" value="moyenne" />
         <Picker.Item label="haute" value="haute" />
         <Picker.Item label="critique" value="critique" />
       </Picker>
+      <TouchableOpacity style= {styles.appButtonContainer} onPress = {() => {creerTicket()}} >
+                    <Text style = {styles.appButtonText }>Créer le Ticket</Text>
+                </TouchableOpacity>
+
+     
       </View>
+   
+     </>
 
     );
 }
@@ -54,7 +124,14 @@ const styles = StyleSheet.create({
       borderRadius : 25,
       borderColor : '#009387',
       padding : 20,
-     height : '90%'
+      flex : 1,
+    
+    },
+    pageTitle : {
+      fontSize : 30,
+    fontWeight : 'bold',
+      marginTop : 40,
+      marginLeft : 20,
     },
     header: {
         flex: 1,

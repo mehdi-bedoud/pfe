@@ -1,8 +1,9 @@
 export const initialState =  {
-    isLoading : true ,
-    userToken : null , 
-    userName : null , 
-    admin : true ,
+    isLoading : false , 
+    name : null , 
+    privilege : null ,
+    email : null,
+   
 
 }
 

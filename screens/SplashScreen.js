@@ -37,7 +37,7 @@ const SplashScreen = ({navigation}) => {
         >
             <Text style={[styles.title, {
                 color: colors.text
-            }]}>Régler Vos Problèmes Sans Déplacer!</Text>
+            }]}>Régler Vos Problèmes Sans Se Déplacer!</Text>
             <Text style={styles.text}>Seulement avec votre mobile! </Text>
             <Text style={styles.text}>Se connecter maintenant </Text>
             <View style={styles.button}>

@@ -13,6 +13,8 @@ import * as Animatable from 'react-native-animatable';
 //import LinearGradient from 'react-native-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { Header } from 'react-native-elements';
 
 import { useTheme } from 'react-native-paper';
 
@@ -90,10 +92,20 @@ const SignUpScreen = ({navigation}) => {
 
 //------------------------------------------------
 
-    return (
+    return (<>
+    <Header
+    leftComponent={ <Icon.Button name = "menu" backgroundColor = '#fff' size = {25} onPress = { () => navigation.openDrawer()}/>}
+    containerStyle={{
+        //backgroundColor: '#009387',
+        justifyContent: 'space-around',
+      }}
+
+  />
+
       <View style={styles.container}>
           <StatusBar backgroundColor='#009387' barStyle="light-content"/>
         <View style={styles.header}>
+        
             <Text style={styles.text_header}>Ajouter Un Client</Text>
         </View>
         <View style ={styles.footer} >
@@ -189,7 +201,7 @@ const SignUpScreen = ({navigation}) => {
         </View>
         </View>
         
-     
+     </>
     );
 }
 
@@ -198,8 +210,9 @@ export default SignUpScreen;
 const styles = StyleSheet.create({
     container: {
       flex: 1, 
-      backgroundColor: '#009387'
+      //backgroundColor: '#009387'
     },
+    
     header: {
         flex: 1,
         justifyContent: 'flex-end',

@@ -13,7 +13,7 @@ import * as Animatable from 'react-native-animatable';
 //import LinearGradient from 'react-native-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
-import client from '../classes/client';
+import administrateur from '../classes/administrateur';
 
 
 //import { AuthContext } from '../components/context';
@@ -22,73 +22,15 @@ import client from '../classes/client';
 
 const AddClient = ({navigation}) => {
 
-    //--------------------------
-    const [visible , setVisible] = useState(true);
-    const [eyeName,setEyeName] = useState('eye-off');
-    const [eyeColor,setEyeColor] = useState('gray')
-    const isVisible = () => {
-        setVisible(!visible)
-        switch (eyeName){
-            case 'eye' : setEyeName('eye-off');break;
-            case 'eye-off' : setEyeName('eye');break;
-        }
-        switch (eyeColor){
-            case 'gray' : setEyeColor('green');break;
-            case 'green' : setEyeColor('gray');break;
-        }
-    }
-   
-    //----------------------------------------
-    const [data, setData] = React.useState({
-        email: '',
-        password: '',
-        check_textInputChange: false,
-        secureTextEntry: true,
-        //isValidUser: true,
-        //isValidPassword: true,
-    });
-    //--------------------------------------------------
-    const textInputChange = (val) => {
-        if(val.length != 0){
-            setData({
-                ...data,
-                email : val ,
-                check_textInputChange : true,
+const [name , setName ] = useState('');
+const [mail , setMail ] = useState('');
+const [password1 , setPassword1 ] = useState('');
+const [password2 , setPassword2 ] = useState('');
 
-            })
-
-        }
-        else {
-            setData({
-                ...data,
-                check_textInputChange : false,
-
-            })
-
-        }
-    }
-    // password 
-    const passwordChange = (val) => {
-        if(val.length != 0){
-            setData({
-                ...data,
-                password : val ,
-
-            })
-
-        }
-        else {
-            setData({
-                ...data,
-                check_textInputChange : false,
-
-            })
-
-        }
-    }
-//------------------------------------------------
-
-//------------------------------------------------
+const addUser = ()=>{
+    if (name.length != 0 && mail.length != 0 && password1.length !=0 && password1 == password2)
+    administrateur.addUser({name , mail , password1 , privilege : 'client'})
+}
 
     return (
       <View style={styles.container}>
@@ -97,31 +39,37 @@ const AddClient = ({navigation}) => {
             <Text style={styles.text_header}>Ajouter Un Client</Text>
         </View>
         <View style ={styles.footer} >
-            <Text>Email</Text>
+            <Text>Nom complet</Text>
             <View style = {styles.action}>
             <FontAwesome 
                     name="user-o"
                     size={20}
                 />
-                <TextInput 
-                   placeholder = 'Entrer votre mail' 
+                 <TextInput 
+                   placeholder = 'Entrer le nom complet' 
                    style = {styles.textInput} 
-                   onChangeText = {(val)=>textInputChange(val) }
+                   onChangeText = {(val)=>setName(val) }
                   
 
                 ></TextInput>
-                 <Animatable.View
-                    animation="bounceIn"
-                >
-                    {data.check_textInputChange ?
-                    <Feather 
-                        name="check-circle"
-                        color="green"
-                        size={20}
-                    />
-                    :
-                    null}
-                </Animatable.View>
+               
+                 
+            </View>
+            <Text style = {{marginTop : 35}}>Email</Text>
+            <View style = {styles.action}>
+            <FontAwesome 
+                    name="user-o"
+                    size={20}
+                />
+                 <TextInput 
+                   placeholder = 'Entrer le mail ' 
+                   style = {styles.textInput} 
+                   onChangeText = {(val)=>setMail(val) }
+                  
+
+                ></TextInput>
+               
+                 
             </View>
        {/* mot de passe  */}
             <Text style ={{marginTop : 35}} >Mot de passe</Text>
@@ -132,26 +80,13 @@ const AddClient = ({navigation}) => {
                     size={20}
                 />
                 <TextInput 
-                   placeholder = 'Entrer votre mot de passe' 
-                   secureTextEntry = {visible}
+                   placeholder = 'Entrer le mot de passe' 
                    style = {styles.textInput} 
-                   onChangeText = {(val)=>passwordChange(val) }
+                   onChangeText = {(val)=>setPassword1(val) }
                   
 
                 ></TextInput>
-                 <TouchableOpacity onPress = {isVisible}>
-                 <Animatable.View
-                    animation="bounceIn"
-                >
-                    <Feather 
-                        name={eyeName}
-                        color={eyeColor}
-                        size={20}
-                       
-                        
-                    />
-                </Animatable.View>
-                 </TouchableOpacity>
+                
             </View>
             <Text style = {{marginTop : 35}}>Confirmer le mot de passe</Text>
             <View style = {styles.action}>
@@ -160,29 +95,17 @@ const AddClient = ({navigation}) => {
                     size={20}
                 />
                 <TextInput 
-                   placeholder = 'Conformer le mot de passe' 
-                   secureTextEntry = {visible}
+                   placeholder = 'Confirmer le mot de passe' 
+               
                    style = {styles.textInput} 
-                   onChangeText = {(val)=>passwordChange(val) }
+                   onChangeText = {(val)=>setPassword2(val) }
                   
 
                 ></TextInput>
-                 <TouchableOpacity onPress = {isVisible}>
-                 <Animatable.View
-                    animation="bounceIn"
-                >
-                    <Feather 
-                        name={eyeName}
-                        color={eyeColor}
-                        size={20}
-                       
-                        
-                    />
-                </Animatable.View>
-                 </TouchableOpacity>
+                
             </View>
             <View style = {styles.button}>
-                <TouchableOpacity style= {styles.appButtonContainer}  >
+                <TouchableOpacity style= {styles.appButtonContainer} onPress = {()=>addUser()} >
                     <Text style = {styles.appButtonText }>Ajouter un Client</Text>
                 </TouchableOpacity>
             </View >

@@ -1,57 +1,32 @@
-import { StyleSheet, Text, View , Button , FlatList , ScrollView , LogBox } from 'react-native';
+import { StyleSheet, Text, View , Button , FlatList , ScrollView , LogBox, TouchableOpacity } from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import React, { useContext, useEffect, useReducer, useState } from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {AuthContext} from '../components/Context';
+//import {AuthContext} from '../components/Context';
 import {Picker} from '@react-native-picker/picker';
+import ProductScreen from './ProductScreen';
+import ComposantScreen from './ComposantScreen';
+import administrateur from '../classes/administrateur';
+import employe from '../classes/employe';
+import client from '../classes/client';
 
 
 
 
 
 
-const list = [{title : 'hello ',
- description : 'un problème dans le compteur de l\'eau il n\'est pas strict problème dans le compteur de problème dans le compteur de '
-,etat : 'ouvert',
- }, 
-{
-  title : 'girou ',
-description : 'description ',
-etat : 'ouvert',
-}, 
-{
-title : 'girofu2',
-description : 'description ',
-etat : 'ouvert',
-}, 
-{
-  title : 'girou21',
-  description : 'description ',
-  etat : 'ouvert',
-
-  }, 
-  {
-    title : 'girou22',
-    description : 'description ',
-    etat : 'ouvert',
-    }, 
-    {
-      title : 'gihrou2',
-      description : 'description ',
-      etat : 'ouvert',
-      }, 
-      {
-        title : 'girofu2',
-        description : 'description ',
-        etat : 'ouvert',
-        }, 
-]
-
+var ProductTitle ;
 
  function HomeScreen(props){
+const [list ,setList] = useState([]); 
 
- 
-  // we can call db from here but we have to initial the State here of Services and Tickets 
+
+const setProductTitle = (title)=> {
+  ProductTitle = title;
+  return
+}
+
+  
 
 
 // here it must be a useEffect to bring data from db depending on admin value ;
@@ -68,32 +43,44 @@ etat : 'ouvert',
 
 //const [selectedValue , setSelectedValue] = useState()
 
-useEffect(() => {
-  LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
+
+useEffect(async() => {
+  
+    switch (props.privilege){
+      case 'admin':   //getting list des produits
+      setList( await administrateur.getAllProducts())
+       ;break;
+      case 'employe' :  setList(await employe.getAssignedTickets()) ;break ; 
+      case 'client' : setList(await client.getCreatedTickets()) ; break ; 
+    }
+
 }, []);
 
-
-
     return  (
-       props.cr ? 
+       props.privilege == 'admin' ? 
         <>
-        <Text style = {styles.title}> Les Services : </Text>
+        <Text style = {styles.title}> Les Produits : </Text>
      <ScrollView style = {styles.container}>
      <View >
-    <FlatList   keyExtractor = { e => e.name} data = {list} renderItem = {({item}) =>
-    <View style = {styles.list}>
+ 
+     <FlatList style={styles.container} keyExtractor = { e => e.name} data = {list} renderItem = {({item}) =>
+   <TouchableOpacity onPress = {()=>{
+     setProductTitle(item.title);
+    props.navigation.navigate('ProductScreen')
+   }}>
+      <View style = {styles.list}>
       <View style = {styles.listRow}>
-         <Text style = {styles.ticketTitle}> {item.title} </Text> 
+        <Text style = {styles.ticketTitle}> {item.title} </Text>  
       </View>
-    
     </View>
+   </TouchableOpacity>
 
       }/>
 </View>
      </ScrollView>
 
         </>
-        : props.client?  
+        : props.privilege == 'client' ?  
       <>
       <Text style = {styles.title}> Les Tickets Ouverts : </Text>
      <ScrollView>
@@ -117,7 +104,7 @@ useEffect(() => {
       }/>
 </View>
      </ScrollView>
-</>  : props.admin ? 
+</>  : props.privilege == 'employe' ? 
  <>
  <Text style = {styles.title}> Les Tickets Assignés: </Text>
      <ScrollView>
@@ -142,7 +129,7 @@ useEffect(() => {
         <Picker.Item label="Re-ouvert" value="re-ouvert" />
         <Picker.Item label="Pas un probleme" value="nonprobleme" />
       </Picker>
-        <Text style = {styles.listItem}>{item.etat} </Text>
+        
       </View>
       <View style = {styles.listRow}>
         <Text style = {styles.ticketTitle}> Description : </Text>  
@@ -178,6 +165,36 @@ useEffect(() => {
        fontWeight : 'bold',
      },
      headerLeft : () =>(  <Icon.Button name = "menu" backgroundColor = '#009387' size = {25} onPress = { () => props.navigation.openDrawer()}  />)
+
+   }
+ }  />
+   <homeStack.Screen name = 'ProductScreen' children = { () => <ProductScreen {...props  } ProductTitle =  {ProductTitle}   />} 
+   options = {
+   {
+     headerStyle : {
+       backgroundColor : '#009387',
+       
+     },
+     headerTintColor : '#fff',
+     headerTitleStyle:{
+       fontWeight : 'bold',
+     },
+     headerLeft : () =>(  <Icon.Button name = "menu" backgroundColor = '#009387' size = {25} onPress = { () => props.navigation.openDrawer()}  />)
+
+   }
+ } 
+ />
+<homeStack.Screen name = 'ComposantScreen' children = { (hh ) => <ComposantScreen {...props} {...hh} />} options = {
+   {
+     headerStyle : {
+       backgroundColor : '#009387',
+       
+     },
+     headerTintColor : '#fff',
+     headerTitleStyle:{
+       fontWeight : 'bold',
+     },
+     headerLeft : () =>(  <Icon.Button name = "arrow-back" backgroundColor = '#009387' size = {25} onPress = { () => props.navigation.goBack()}  />)
 
    }
  }  />

@@ -32,29 +32,19 @@ const setProductTitle = (title)=> {
 // here it must be a useEffect to bring data from db depending on admin value ;
 // so importing th callBack function that executes the dispatch and then use it inside useEffect so : 
 
-// useEffect( () => {
-//   if (props.admin){
-//     BringServices();
-//   } else {
-//     bringOpenTickets();
-//   } 
-// } , [props.admin]);
-
 
 //const [selectedValue , setSelectedValue] = useState()
+const start = async() => {
+  console.log(props.email)
+  switch (props.privilege){
+    case 'admin':   //getting list des produits
+    setList( await administrateur.getAllProducts());break;
+    case 'employe' :  setList(await employe.getAssignedTickets(props.email)) ;break ; 
+    case 'client' : setList(await client.getCreatedTickets(props.email)) ; break ; 
+}
+}
 
-
-useEffect(async() => {
-  
-    switch (props.privilege){
-      case 'admin':   //getting list des produits
-      setList( await administrateur.getAllProducts())
-       ;break;
-      case 'employe' :  setList(await employe.getAssignedTickets()) ;break ; 
-      case 'client' : setList(await client.getCreatedTickets()) ; break ; 
-    }
-
-}, []);
+useEffect(() => {start()}, [list]);
 
     return  (
        props.privilege == 'admin' ? 
@@ -63,7 +53,7 @@ useEffect(async() => {
      <ScrollView style = {styles.container}>
      <View >
  
-     <FlatList style={styles.container} keyExtractor = { e => e.name} data = {list} renderItem = {({item}) =>
+     <FlatList style={styles.container} keyExtractor = { e => e._id} data = {list} renderItem = {({item}) =>
    <TouchableOpacity onPress = {()=>{
      setProductTitle(item.title);
     props.navigation.navigate('ProductScreen')
@@ -85,7 +75,7 @@ useEffect(async() => {
       <Text style = {styles.title}> Les Tickets Ouverts : </Text>
      <ScrollView>
      <View style={styles.container2}>
-    <FlatList style={styles.container} keyExtractor = { e => e.name} data = {list} renderItem = {({item}) =>
+    <FlatList style={styles.container} keyExtractor = { e => e._id} data = {list} renderItem = {({item}) =>
     <View style = {styles.list}>
       <View style = {styles.listRow}>
         <Text style = {styles.ticketTitle}> Titre : </Text>  
@@ -109,7 +99,7 @@ useEffect(async() => {
  <Text style = {styles.title}> Les Tickets Assignés: </Text>
      <ScrollView>
      <View style={styles.container2}>
-    <FlatList style={styles.container} keyExtractor = { e => e.name} data = {list} renderItem = {({item}) =>
+    <FlatList style={styles.container} keyExtractor = { e => e._id} data = {list} renderItem = {({item}) =>
     <View style = {styles.list}>
       <View style = {styles.listRow}>
         <Text style = {styles.ticketTitle}> Titre : </Text>  
@@ -118,15 +108,14 @@ useEffect(async() => {
       <View style = {styles.listRow}>
         <Text style = {styles.ticketTitle}> Etat : </Text>  
         <Picker
-        selectedValue={"Assigné"} // l'etat courant du ticket lors de la bd
+        selectedValue={item.etat} // l'etat courant du ticket lors de la bd
         style={{ height: 50, width: 150 }}
-        onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
+        onValueChange={async(etat) => {
+          await administrateur.modifierEtatTicket(item._id, etat);
+        }}
       >
-        <Picker.Item label="Ouvert" value="ouvert" />
-        <Picker.Item label="Fermé" value="fermé" />
         <Picker.Item label="Assigné" value="assigné" />
         <Picker.Item label="Résolu" value="résolu" />
-        <Picker.Item label="Re-ouvert" value="re-ouvert" />
         <Picker.Item label="Pas un probleme" value="nonprobleme" />
       </Picker>
         
@@ -154,7 +143,7 @@ useEffect(async() => {
   export default function stackHomeScreen (props){
    return (
     <homeStack.Navigator>
-    <homeStack.Screen name = 'Acceuil' children = { () => <HomeScreen {...props} />} options = {
+    <homeStack.Screen name = 'Acceuil' children = { (hh) => <HomeScreen {...props} {...hh} />} options = {
    {
      headerStyle : {
        backgroundColor : '#009387',
@@ -168,7 +157,7 @@ useEffect(async() => {
 
    }
  }  />
-   <homeStack.Screen name = 'ProductScreen' children = { () => <ProductScreen {...props  } ProductTitle =  {ProductTitle}   />} 
+   <homeStack.Screen name = 'ProductScreen' children = { (hh) => <ProductScreen {...props  }{...hh} ProductTitle =  {ProductTitle}   />} 
    options = {
    {
      headerStyle : {
@@ -179,7 +168,7 @@ useEffect(async() => {
      headerTitleStyle:{
        fontWeight : 'bold',
      },
-     headerLeft : () =>(  <Icon.Button name = "menu" backgroundColor = '#009387' size = {25} onPress = { () => props.navigation.openDrawer()}  />)
+     headerLeft : () =>(  <Icon.Button name = "arrow-back" backgroundColor = '#009387' size = {25} onPress = { () => props.navigation.goBack()}  />)
 
    }
  } 
@@ -188,7 +177,7 @@ useEffect(async() => {
    {
      headerStyle : {
        backgroundColor : '#009387',
-       
+      
      },
      headerTintColor : '#fff',
      headerTitleStyle:{

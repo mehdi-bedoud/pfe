@@ -8,8 +8,25 @@ export default class administrateur extends User   {
         super(name , email , password ,'admin')
     }
 
-    editState(ticketId){
+   static async modifierEtatTicket(itemId , etat){
         // modification de l'etat de  ticket 
+        console.log('itemId id');
+        console.log(itemId);
+
+        try {
+          await Axios.post('/api/tickets/modifieretat', {itemId , etat})
+         alert ('success ;)')
+        }catch (error){
+          alert(error)
+        }
+    }
+    static async assignerTicket(itemId , employeEmail){
+      try {
+        await Axios.post('/api/tickets/assigner', {itemId , employeEmail})
+       alert ('success ;)')
+      }catch (error){
+        alert(error)
+      }
     }
 
   
@@ -37,11 +54,13 @@ if (data) alert ('user removed ')
 
 
     }
-    async getAll(privilege){
+    static async getAll(privilege){
       try{
-        const {data} = await Axios.get('/all')
+        const {data} = await Axios.get('/api/users/all/'+privilege )
+        return (data);
 
       }catch (err){
+        alert(err);
 
       }
     }

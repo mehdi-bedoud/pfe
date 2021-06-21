@@ -8,19 +8,52 @@ import administrateur from '../classes/administrateur';
 
 
 const ComposantScreen  = (props) =>  {
-  const [list , setList] = useState()
-  console.log(props);
+  const [list , setList] = useState();
+  const [assign , setAssign] = useState(false);
+  const [employes , setEmployes] = useState();
+  const [itemId , setItemId] = useState();
+  const [etaat , setEtaat] = useState();
+
   const  {composantTitle , productTitle} =  props.route.params;
   
 
 
-  const assignerTicket = (id) => {
-    
+  const assignerTicket = async(itemId , employeEmail) => {
+    await administrateur.assignerTicket(itemId , employeEmail , )
   }
-  useEffect(async() => {
-    setList( await administrateur.getTickets(productTitle , composantTitle))
+  const start = async()=> {   setList( await administrateur.getTickets(productTitle , composantTitle))
+    setEmployes(await administrateur.getAll('employe'))}
+
+  useEffect(() => {
+    start()
 }, []);
     return (
+      assign ? <>
+      <Text style = {styles.title}> Les Employés : </Text>
+      <ScrollView>
+     <View style={styles.container2}>
+    <FlatList style={styles.container} keyExtractor = { e => e.name} data = {employes} renderItem = {({item}) =>
+    <View style = {styles.list}>
+      <View style = {styles.listRow}> 
+        <Text style = {styles.listItem}>{item.name} </Text>
+      </View>
+      <TouchableOpacity style= {styles.appButtonContainer} onPress = {()=> {
+         assignerTicket(itemId , item.email)
+         setAssign(false);
+        
+       }} >
+       <Text style = {styles.appButtonText }>Assigner le Ticket</Text>
+   </TouchableOpacity>
+    </View>
+
+      }/>
+</View>
+
+     </ScrollView>
+
+      
+      
+      </>:
         <>
  <Text style = {styles.title}> Les Tickets : </Text>
      <ScrollView>
@@ -34,9 +67,12 @@ const ComposantScreen  = (props) =>  {
       <View style = {styles.listRow}>
         <Text style = {styles.ticketTitle}> Etat : </Text>  
         <Picker
-        selectedValue={"Assigné"} // l'etat courant du ticket lors de la bd
+        selectedValue={item.etat} // l'etat courant du ticket lors de la bd
         style={{ height: 50, width: 150 }}
-        onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
+        onValueChange={async(etat) => {
+          await administrateur.modifierEtatTicket(item._id, etat);
+          setEtaat(etat)
+        }}
       >
         <Picker.Item label="Ouvert" value="ouvert" />
         <Picker.Item label="Fermé" value="fermé" />
@@ -51,9 +87,19 @@ const ComposantScreen  = (props) =>  {
         <Text style = {styles.ticketTitle}> Description : </Text>  
         <Text style = {styles.listItem}>{item.description} </Text>
       </View>
-      <TouchableOpacity style= {styles.appButtonContainer} onPress = {assignerTicket(item.id)} >
-                    <Text style = {styles.appButtonText }>Assigner le Ticket</Text>
-                </TouchableOpacity>
+     {
+       item.assignedTo == '' ?  <TouchableOpacity style= {styles.appButtonContainer} onPress = {()=> {
+         setAssign(true);
+         setItemId(item._id)
+       }} >
+       <Text style = {styles.appButtonText }>Assigner le Ticket</Text>
+   </TouchableOpacity>
+   :
+   <>
+   <Text style = {styles.ticketTitle}> Assigné a : </Text>  
+   <Text style = {styles.listItem}>{item.assignedTo} </Text>
+</>
+     }
     </View>
 
       }/>

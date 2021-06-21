@@ -142,17 +142,17 @@ if( loginState.isLoading ) {
       <NavigationContainer>
       {
        !loginState.name ?  <RootStackk/>  :
-<Drawer.Navigator drawerContent = { props => <DContent { ...props} privilege = {loginState.privilege} />}    >
-      <Drawer.Screen   children = { props => <Tabs {...props} privilege = {loginState.privilege} />}name = "MainTab"  />
-      <Drawer.Screen name="Profile" component={ProfileScreen} />
-      <Drawer.Screen name="SignUpScreen" component={SignUpScreen} />
-      <Drawer.Screen name="ListClient" component={ClientListScreen} />
-      <Drawer.Screen name="ListEmploye" component={EmployeListScreen} />
-      <Drawer.Screen name="AddClient" component={AddClient} />
-      <Drawer.Screen name="AddEmploye" component={AddEmploye} />
-      <Drawer.Screen name="addComposant" component={AddComposant} />
-      <Drawer.Screen name="addProduit" component={AddProduit} />
-     
+<Drawer.Navigator drawerContent = { props => <DContent { ...props} privilege = {loginState.privilege} email = {loginState.email} />}    >
+      <Drawer.Screen   children = { props => <Tabs {...props} privilege = {loginState.privilege} email = {loginState.email} />}name = "MainTab"  />
+      <Drawer.Screen   children = {props =><ProfileScreen {...props}/>} name="Profile" />
+      <Drawer.Screen   children = {props =><SignUpScreen {...props}/>} name="SignUpScreen" />
+      <Drawer.Screen   children = {props =><ClientListScreen {...props}/>} name="ListClient" />
+      <Drawer.Screen   children = {props =><EmployeListScreen {...props}/>} name="ListEmploye" />
+      <Drawer.Screen   children = {props =><AddClient {...props}/>} name="AddClient" />
+      <Drawer.Screen   children = {props =><AddEmploye {...props}/>} name="AddEmploye" />
+      <Drawer.Screen   children = {props =><AddComposant {...props}/>} name="addComposant" />
+      <Drawer.Screen   children = {props =><AddProduit {...props}/>} name="addProduit" />
+  
     </Drawer.Navigator> 
     }
   </NavigationContainer>

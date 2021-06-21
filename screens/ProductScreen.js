@@ -1,20 +1,20 @@
 import React ,  {useState , useEffect} from 'react';
 import {View , Text , StyleSheet , ScrollView , TouchableOpacity , FlatList} from 'react-native';
 import administrateur from '../classes/administrateur';
-import Icon from 'react-native-vector-icons/Ionicons';
-import ComposantScreen from './ComposantScreen';
 
-var composantTitle;
+
+
 const ProductScreen  = (props) =>  {
+  var composantTitle;
   const [list , setList] = useState();
 
   const setComposantTitle = (title)=> {
     composantTitle = title;
-    return
   }
+  const getComposant = async()=>setList( await administrateur.getComposants(props.ProductTitle))
 
-  useEffect(async() => {
-      setList( await administrateur.getComposants(props.ProductTitle))
+  useEffect(() => {
+    getComposant()
 }, []);
   console.log('prod is ');
   console.log(props);

@@ -1,10 +1,9 @@
 import HomeScreen from './HomeScreen'
-import SecondScreen from './SecondScreen'
 import TicketScr from './TicketCreateScreen'
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon2 from 'react-native-vector-icons/Ionicons';
-import Icon from 'react-native-vector-icons/FontAwesome5'
+
 import React from 'react';
 
 
@@ -42,7 +41,7 @@ export default function MyTabs(props) {
       /> */}
       <Tab.Screen
         name="Ticket"
-        component={TicketScr}
+        children = { () => <TicketScr {...props}  />}
         options={{
           tabBarLabel: 'Créer Ticket',
           tabBarIcon: ({ color }) => (

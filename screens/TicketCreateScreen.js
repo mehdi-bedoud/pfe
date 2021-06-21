@@ -8,7 +8,7 @@ import User from '../classes/User';
 
 
 
- const TicketScreen =() =>{
+ const TicketScreen =(props) =>{
      const [title , setTitle ] = useState();
     const [description , setDescription ] = useState();
     const [priorite , setPriorite] = useState();
@@ -20,9 +20,9 @@ import User from '../classes/User';
     const [etat , setEtat] = useState('ouvert');
 
     const creerTicket = async() => {
-      console.log('ziiit')
+      var createdBy = props.email;
       
-      await User.createTicket(title , description , adresse , produit , composant , etat, priorite)
+      await User.createTicket(title , description , adresse , produit , composant , etat, priorite , createdBy )
 
     }
 
@@ -95,7 +95,7 @@ useEffect( async()=> {
 
            <Text style = {styles.ticketTitle}>Priorité : </Text>
                  <Picker
-   
+   selectedValue={priorite}
         style={{ height: 50, width: 150 ,margin : 10,paddingLeft : 10}}
         onValueChange={(itemValue) => setPriorite(itemValue)}
       >

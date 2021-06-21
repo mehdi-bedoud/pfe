@@ -13,110 +13,107 @@ import * as Animatable from 'react-native-animatable';
 //import LinearGradient from 'react-native-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
+import administrateur from '../classes/administrateur';
 
-import { useTheme } from 'react-native-paper';
-import employe from '../classes/employe';
 
 //import { AuthContext } from '../components/context';
 
 //import Users from '../model/users';
 
-
-
 const AddEmploye = ({navigation}) => {
 
-    //--------------------------
-    const [name , setName ] = useState('');
-    const [mail , setMail ] = useState('');
-    const [password1 , setPassword1 ] = useState('');
-    const [password2 , setPassword2 ] = useState('');
-    
-    const addUser = ()=>{
-        if (name.length != 0 && mail.length != 0 && password1.length !=0 && password1 == password2)
-        administrateur.addUser({name , mail , password1} , 'client')
-    }
-        return (
-          <View style={styles.container}>
-              <StatusBar backgroundColor='#009387' barStyle="light-content"/>
-            <View style={styles.header}>
-                <Text style={styles.text_header}>Ajouter Un Client</Text>
+const [name , setName ] = useState('');
+const [mail , setMail ] = useState('');
+const [password1 , setPassword1 ] = useState('');
+const [password2 , setPassword2 ] = useState('');
+
+const addUser = ()=>{
+    if (name.length != 0 && mail.length != 0 && password1.length !=0 && password1 == password2)
+    administrateur.addUser({name , mail , password1 , privilege : 'employe'})
+}
+
+    return (
+      <View style={styles.container}>
+          <StatusBar backgroundColor='#009387' barStyle="light-content"/>
+        <View style={styles.header}>
+            <Text style={styles.text_header}>Ajouter Un Client</Text>
+        </View>
+        <View style ={styles.footer} >
+            <Text>Nom complet</Text>
+            <View style = {styles.action}>
+            <FontAwesome 
+                    name="user-o"
+                    size={20}
+                />
+                 <TextInput 
+                   placeholder = 'Entrer le nom complet' 
+                   style = {styles.textInput} 
+                   onChangeText = {(val)=>setName(val) }
+                  
+
+                ></TextInput>
+               
+                 
             </View>
-            <View style ={styles.footer} >
-                <Text>Nom complet</Text>
-                <View style = {styles.action}>
-                <FontAwesome 
-                        name="user-o"
-                        size={20}
-                    />
-                     <TextInput 
-                       placeholder = 'Entrer le nom complet' 
-                       style = {styles.textInput} 
-                       onChangeText = {(val)=>setName(val) }
-                      
-    
-                    ></TextInput>
-                   
-                     
-                </View>
-                <Text style = {{marginTop : 35}}>Email</Text>
-                <View style = {styles.action}>
-                <FontAwesome 
-                        name="user-o"
-                        size={20}
-                    />
-                     <TextInput 
-                       placeholder = 'Entrer le mail ' 
-                       style = {styles.textInput} 
-                       onChangeText = {(val)=>setMail(val) }
-                      
-    
-                    ></TextInput>
-                   
-                     
-                </View>
-           {/* mot de passe  */}
-                <Text style ={{marginTop : 35}} >Mot de passe</Text>
-    
-                <View style = {styles.action}>
-                <Feather 
-                        name="lock"
-                        size={20}
-                    />
-                    <TextInput 
-                       placeholder = 'Entrer le mot de passe' 
-                       style = {styles.textInput} 
-                       onChangeText = {(val)=>setPassword1(val) }
-                      
-    
-                    ></TextInput>
-                    
-                </View>
-                <Text style = {{marginTop : 35}}>Confirmer le mot de passe</Text>
-                <View style = {styles.action}>
-                <Feather 
-                        name="lock"
-                        size={20}
-                    />
-                    <TextInput 
-                       placeholder = 'Confirmer le mot de passe' 
-                   
-                       style = {styles.textInput} 
-                       onChangeText = {(val)=>setPassword2(val) }
-                      
-    
-                    ></TextInput>
-                    
-                </View>
-                <View style = {styles.button}>
-                    <TouchableOpacity style= {styles.appButtonContainer} onPress = {addUser()} >
-                        <Text style = {styles.appButtonText }>Ajouter un Client</Text>
-                    </TouchableOpacity>
-                </View >
+            <Text style = {{marginTop : 35}}>Email</Text>
+            <View style = {styles.action}>
+            <FontAwesome 
+                    name="user-o"
+                    size={20}
+                />
+                 <TextInput 
+                   placeholder = 'Entrer le mail ' 
+                   style = {styles.textInput} 
+                   onChangeText = {(val)=>setMail(val) }
+                  
+
+                ></TextInput>
+               
+                 
             </View>
+       {/* mot de passe  */}
+            <Text style ={{marginTop : 35}} >Mot de passe</Text>
+
+            <View style = {styles.action}>
+            <Feather 
+                    name="lock"
+                    size={20}
+                />
+                <TextInput 
+                   placeholder = 'Entrer le mot de passe' 
+                   style = {styles.textInput} 
+                   onChangeText = {(val)=>setPassword1(val) }
+                  
+
+                ></TextInput>
+                
             </View>
-            
-         
-        );
+            <Text style = {{marginTop : 35}}>Confirmer le mot de passe</Text>
+            <View style = {styles.action}>
+            <Feather 
+                    name="lock"
+                    size={20}
+                />
+                <TextInput 
+                   placeholder = 'Confirmer le mot de passe' 
+               
+                   style = {styles.textInput} 
+                   onChangeText = {(val)=>setPassword2(val) }
+                  
+
+                ></TextInput>
+                
+            </View>
+            <View style = {styles.button}>
+                <TouchableOpacity style= {styles.appButtonContainer} onPress = {()=>addUser()} >
+                    <Text style = {styles.appButtonText }>Ajouter un Client</Text>
+                </TouchableOpacity>
+            </View >
+        </View>
+        </View>
+        
+     
+    );
 }
 
 export default AddEmploye;

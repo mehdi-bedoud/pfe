@@ -69,11 +69,13 @@ export default class User {
 
 
 
-  static  async createTicket(title , description , adresse , produit , composant , etat , priorite){ //creation de ticket
-    console.log('create');
-   const  data = await Axios.post('/api/tickets/createticket' , {title , description , adresse , produit , composant , etat , priorite});
-if (data) alert ('ticket ajouté ;)');
-
+  static  async createTicket(title , description , adresse , produit , composant , etat , priorite , createdBy){ //creation de ticket
+try {
+  const  data = await Axios.post('/api/tickets/createticket' , {title , description , adresse , produit , composant , etat , priorite,createdBy});
+  if (data) alert ('ticket ajouté ;)');
+}catch{
+  alert ('erreur');
+}
 }
 
 };

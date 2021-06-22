@@ -13,9 +13,6 @@ export default class Produit  {
         this.nom = name;
     }
 
-    save(){
-        console.log('hello');
 
-    }
 
 }

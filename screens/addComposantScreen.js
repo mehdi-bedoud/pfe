@@ -26,9 +26,14 @@ const addProduct = async()=>{
     if (data ) alert ('Composant ajouté')
     else alert ('erreur')
 }
+const getProducts = async() => {
+    setProduits(await administrateur.getAllProducts())
+}
 
-    useEffect( async()=> {
-        setProduits(await administrateur.getAllProducts())
+
+
+    useEffect( ()=> {
+        getProducts();
       } , [])
 
 

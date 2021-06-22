@@ -16,8 +16,7 @@ const ProductScreen  = (props) =>  {
   useEffect(() => {
     getComposant()
 }, []);
-  console.log('prod is ');
-  console.log(props);
+
     return (
         <>
         <Text style = {styles.title}> Les Composants : </Text>

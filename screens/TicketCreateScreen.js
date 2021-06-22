@@ -25,9 +25,12 @@ import User from '../classes/User';
       await User.createTicket(title , description , adresse , produit , composant , etat, priorite , createdBy )
 
     }
-
-useEffect( async()=> {
-  setProduits(await administrateur.getAllProducts())
+    const getProducts = async()=>{
+      setProduits(await administrateur.getAllProducts())
+    }
+    
+useEffect( ()=> {
+  getProducts()
  
 } , [])
     return (

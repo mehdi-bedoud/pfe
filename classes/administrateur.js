@@ -10,8 +10,7 @@ export default class administrateur extends User   {
 
    static async modifierEtatTicket(itemId , etat){
         // modification de l'etat de  ticket 
-        console.log('itemId id');
-        console.log(itemId);
+
 
         try {
           await Axios.post('/api/tickets/modifieretat', {itemId , etat})
@@ -34,7 +33,7 @@ export default class administrateur extends User   {
       
       try {
         const {data}  = await Axios.post("/api/users/register", { name , email : mail, password : password1 , privilege });
-        console.log(data.name);
+   
         if (data) alert (`${data.name} is created`);
         //Cookie.set('userInfo', JSON.stringify(data));
       } catch (error) {
@@ -67,7 +66,7 @@ if (data) alert ('user removed ')
    static async addProduit(title){ // ajout produit 
       const {data}  = await Axios.post('/api/produits/createproduit' , {title})
       if (data) {
-        console.log (data);
+
         alert ('produit ajouté')
         return true ;
       }
@@ -82,8 +81,7 @@ if (data) alert ('user removed ')
      
       const {data} = await Axios.get('/api/produits/');
       if (data){
-        console.log ('data is ')
-        console.log(data);
+       
         return data
       }else{
         console.log('erreur')
@@ -92,11 +90,9 @@ if (data) alert ('user removed ')
 
     }
    static async addComposant(title , produit){  //ajout composant
-    console.log ('produit is ')
-    console.log (produit);
+  
       const {data}  = await Axios.post('/api/produits/createcomposant' , {title , produit})
-      console.log('composantIs')
-      console.log(data);
+ 
       if (data) return true ;
       return false  ; 
 

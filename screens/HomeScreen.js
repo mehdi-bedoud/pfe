@@ -35,7 +35,7 @@ const setProductTitle = (title)=> {
 
 //const [selectedValue , setSelectedValue] = useState()
 const start = async() => {
-  console.log(props.email)
+
   switch (props.privilege){
     case 'admin':   //getting list des produits
     setList( await administrateur.getAllProducts());break;
@@ -44,7 +44,7 @@ const start = async() => {
 }
 }
 
-useEffect(() => {start()}, [list]);
+useEffect(() => {start()}, []);
 
     return  (
        props.privilege == 'admin' ? 

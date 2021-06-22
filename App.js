@@ -64,8 +64,7 @@ const  loginReducer = (state ,action) => {
       dispatch ({type : 'login-request'});
         userr =  await User.Login(email,password);
       if (userr){
-        console.log('user is ');
-        console.log(userr);
+     
         dispatch ({
           type : 'login-success',
           name: userr.name,

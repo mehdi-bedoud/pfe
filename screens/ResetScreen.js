@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
     View, 
     Text, 
@@ -10,6 +10,7 @@ import {
 import * as Animatable from 'react-native-animatable';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
+import User from '../classes/User';
 
 
 
@@ -17,11 +18,141 @@ import Feather from 'react-native-vector-icons/Feather';
 
     //-------------------------------
     const [email,setEmail] = useState('');
-    const reset = (email)=>{
+    const [result , setResult] = useState('');
+    const [code , setCode] = useState();
+    const [user, setUser] = useState(false);
+    const [password1 , setPassword1 ] = useState('');
+const [password2 , setPassword2 ] = useState('');
 
+//---------------------------------
+    const reset = async()=>{
+if (email != ''){
+   setResult(await User.reset(email));
+
+  
+}else{
+    alert ('entrer votre mail')
+} 
+    }
+//----------------------------------------
+    const verifier = ()=>{
+        if (result == code) setUser(true);
     }
     //-------------------------------
+    const createNewPassword = async() => {
+        if ( password1.length !=0 && password1 == password2){
+            const data = await User.valideReset(email , password1)
+            if (data){
+                alert('mot de passe a été changé ;)')
+            }else{
+                alert ('erreur dans le reseau')
+            }
+        }else {
+            alert ('les mots de passe ne sont pas identiques ! ')
+        }
+    }
+
+    //-------------------------------------
     return (
+        user ? <>
+          <View style={styles.container}>
+      
+      <View style={styles.header}>
+          <Text style={styles.text_header}>Récupérer votre mot de passe ! </Text>
+      </View>
+      <View style ={styles.footer} >
+          <Text>Nouveau mot de passe </Text>
+          <View style = {styles.action}>
+          <FontAwesome 
+                  name="user-o"
+                  size={20}
+              />
+              <TextInput 
+                 placeholder = 'Entrer votre nouveau mot de passe ' 
+                 style = {styles.textInput} 
+                 onChangeText = {(val)=>setPassword1(val) }
+                
+
+              ></TextInput>
+               <Animatable.View
+                  animation="bounceIn"
+              >
+                  <Feather 
+                      name="check-circle"
+                      color="green"
+                      size={20}
+                  />
+              </Animatable.View>
+          </View>
+          <Text>Confirmer Nouveau mot de passe </Text>
+          <View style = {styles.action}>
+          <FontAwesome 
+                  name="user-o"
+                  size={20}
+              />
+              <TextInput 
+                 placeholder = 'confirmer le mot de passe' 
+                 style = {styles.textInput} 
+                 onChangeText = {(val)=>setPassword2(val) }
+                
+
+              ></TextInput>
+               <Animatable.View
+                  animation="bounceIn"
+              >
+                  <Feather 
+                      name="check-circle"
+                      color="green"
+                      size={20}
+                  />
+              </Animatable.View>
+          </View>
+          
+                   <TouchableOpacity style= {styles.appButtonContainer } onPress = {() =>{createNewPassword()}} >
+                    <Text style = {styles.appButtonText }>Créer votre Nouveau mot de passe  </Text>
+                </TouchableOpacity>
+          </View>
+          </View>
+        </>:
+        result ? <>
+         <View style={styles.container}>
+      
+      <View style={styles.header}>
+          <Text style={styles.text_header}>Récupérer votre mot de passe ! </Text>
+          <Text style={styles.text_header}>Un email a été envoyé a votre boite ! </Text>
+      </View>
+      <View style ={styles.footer} >
+          <Text>Entrer le code </Text>
+          <View style = {styles.action}>
+          <FontAwesome 
+                  name="user-o"
+                  size={20}
+              />
+              <TextInput 
+                 placeholder = 'Entrer votre code' 
+                 style = {styles.textInput} 
+                 onChangeText = {(val)=>setCode(val) }
+                
+
+              ></TextInput>
+               <Animatable.View
+                  animation="bounceIn"
+              >
+                  <Feather 
+                      name="check-circle"
+                      color="green"
+                      size={20}
+                  />
+              </Animatable.View>
+          </View>
+          <TouchableOpacity style= {styles.appButtonContainer } onPress = {() =>{verifier()}} >
+                    <Text style = {styles.appButtonText }>Vérifier le Code </Text>
+                </TouchableOpacity>
+          </View>
+          </View>
+        
+        
+        </>:
         <View style={styles.container}>
       
       <View style={styles.header}>
@@ -51,7 +182,7 @@ import Feather from 'react-native-vector-icons/Feather';
                   />
               </Animatable.View>
           </View>
-          <TouchableOpacity style= {styles.appButtonContainer } onPress = {() => navigation.navigate('resetScreen')} >
+          <TouchableOpacity style= {styles.appButtonContainer } onPress = {() =>{reset()}} >
                     <Text style = {styles.appButtonText }>Reset Password </Text>
                 </TouchableOpacity>
           </View>

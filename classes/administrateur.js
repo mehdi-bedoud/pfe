@@ -70,7 +70,7 @@ if (data) alert ('user removed ')
         alert ('produit ajouté')
         return true ;
       }
-      return false  ; 
+      alert('probleme lors de l\'ajout du produit') ; 
 
     }
     deleteProduit (){  // suppression produit

@@ -44,7 +44,7 @@ const start = async() => {
 }
 }
 
-useEffect(() => {start()}, []);
+useEffect(() => {start()}, [props]);
 
     return  (
        props.privilege == 'admin' ? 

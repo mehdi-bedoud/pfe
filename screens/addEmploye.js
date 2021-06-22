@@ -4,10 +4,8 @@ import {
     Text, 
     TouchableOpacity, 
     TextInput,
-    Platform,
     StyleSheet ,
     StatusBar,
-    Alert
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 //import LinearGradient from 'react-native-linear-gradient';
@@ -36,7 +34,7 @@ const addUser = ()=>{
       <View style={styles.container}>
           <StatusBar backgroundColor='#009387' barStyle="light-content"/>
         <View style={styles.header}>
-            <Text style={styles.text_header}>Ajouter Un Client</Text>
+            <Text style={styles.text_header}>Ajouter Un Employé !</Text>
         </View>
         <View style ={styles.footer} >
             <Text>Nom complet</Text>
@@ -106,9 +104,15 @@ const addUser = ()=>{
             </View>
             <View style = {styles.button}>
                 <TouchableOpacity style= {styles.appButtonContainer} onPress = {()=>addUser()} >
-                    <Text style = {styles.appButtonText }>Ajouter un Client</Text>
+                    <Text style = {styles.appButtonText }>Ajouter un Employé</Text>
                 </TouchableOpacity>
             </View >
+            <View style = {styles.button}>
+                <TouchableOpacity style= {styles.appButtonContainer} onPress = {()=>navigation.goBack()} >
+                    <Text style = {styles.appButtonText }>Retour</Text>
+                </TouchableOpacity>
+            </View >
+
         </View>
         </View>
         

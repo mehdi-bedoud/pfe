@@ -14,13 +14,17 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import administrateur from '../classes/administrateur';
 
 
-const AddProduit = ({navigation}) => {
+const AddProduit = (props) => {
 
 const [title , setTitle ] = useState('');
 
 const addProduct = ()=>{
-    if (title.length != 0 )
-    administrateur.addProduit(title)
+    if (title.length != 0 ){
+        administrateur.addProduit(title)
+    }else{
+        alert('entrer le nom du produit')
+    }
+   
 }
 
     return (
@@ -60,11 +64,14 @@ const addProduct = ()=>{
                     <Text style = {styles.appButtonText }>Ajouter un Produit</Text>
                 </TouchableOpacity>
             </View >
+            <View style = {styles.button}>
+                <TouchableOpacity style= {styles.appButtonContainer} onPress = {()=>props.navigation.goBack()} >
+                    <Text style = {styles.appButtonText }>Retour</Text>
+                </TouchableOpacity>
+            </View >
 
 
         </View>
-
-
         </View>
        
      

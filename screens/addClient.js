@@ -109,6 +109,11 @@ const addUser = ()=>{
                     <Text style = {styles.appButtonText }>Ajouter un Client</Text>
                 </TouchableOpacity>
             </View >
+            <View style = {styles.button}>
+                <TouchableOpacity style= {styles.appButtonContainer} onPress = {()=>navigation.goBack()} >
+                    <Text style = {styles.appButtonText }>Retour</Text>
+                </TouchableOpacity>
+            </View >
         </View>
         </View>
         

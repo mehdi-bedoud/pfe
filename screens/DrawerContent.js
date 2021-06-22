@@ -28,6 +28,9 @@ export function DContent (props) {
   const {signOut , name , privilege} = React.useContext(AuthContext);
     const paperTheme = useTheme();
     const [isDarkTheme, setIsDarkTheme] = useState(false);
+    const [gclient, setGclient] = useState(false);
+    const [gemploye , setGemploye] = useState(false);
+    const [gprod , setGprod] = useState(false);
  
 
     const toggleTheme = () => {
@@ -91,10 +94,13 @@ export function DContent (props) {
                                 size={size}
                                 />
                             )}
-                            label="ajouter Composant"
-                            onPress={() => {props.navigation.navigate('addComposant')}}
+                            label="gestion des produits"
+                            onPress={() => {setGprod(!gprod)}}
+                            //onPress={() => {props.navigation.navigate('addComposant')}}
                         />
-                         <DrawerItem 
+                         {
+                          gprod ?<>
+                             <DrawerItem 
                             icon={({color, size}) => (
                                 <Icon2 
                                 name="settings-outline" 
@@ -105,7 +111,38 @@ export function DContent (props) {
                             label="ajouter Produit"
                             onPress={() => {props.navigation.navigate('addProduit')}}
                         />
+
+                               <DrawerItem 
+                            icon={({color, size}) => (
+                                <Icon2 
+                                name="settings-outline" 
+                                color={color}
+                                size={size}
+                                />
+                            )}
+                            label="ajouter Composant"
+                
+                            onPress={() => {props.navigation.navigate('addComposant')}}
+                        />
+                   
+                          </> :null
+                        }
+                       
+                      
                               <DrawerItem 
+                            icon={({color, size}) => (
+                                <Icon
+                                name="account-plus-outline" 
+                                color={color}
+                                size={size}
+                                />
+                            )}
+                            label="Gestion des clients"
+                            onPress={() => {setGclient(!gclient)}}
+                        />
+                        {
+                          gclient ?<>
+                             <DrawerItem 
                             icon={({color, size}) => (
                                 <Icon
                                 name="account-plus-outline" 
@@ -116,18 +153,7 @@ export function DContent (props) {
                             label="Ajouter Client"
                             onPress={() => {props.navigation.navigate('AddClient')}}
                         />
-                         <DrawerItem 
-                            icon={({color, size}) => (
-                                <Icon
-                                name="account-plus-outline" 
-                                color={color}
-                                size={size}
-                                />
-                            )}
-                            label="Ajouter Employé"
-                            onPress={() => {props.navigation.navigate('AddEmploye')}}
-                        />
-                        <DrawerItem 
+                          <DrawerItem 
                             icon={({color, size}) => (
                                 <Icon
                                 name="account-multiple-outline" 
@@ -138,7 +164,33 @@ export function DContent (props) {
                             label="Liste des Clients"
                             onPress={() => {props.navigation.navigate('ListClient')}}
                         />
-                        <DrawerItem 
+                          </> : null
+                        }
+                         <DrawerItem 
+                            icon={({color, size}) => (
+                                <Icon
+                                name="account-network" 
+                                color={color}
+                                size={size}
+                                />
+                            )}
+                            label="Gestion de employés"
+                            onPress={() => {setGemploye(!gemploye)}}
+                        />
+                        {
+                          gemploye ? <>
+                            <DrawerItem 
+                            icon={({color, size}) => (
+                                <Icon
+                                name="account-plus-outline" 
+                                color={color}
+                                size={size}
+                                />
+                            )}
+                            label="Ajouter Employé"
+                            onPress={() => {props.navigation.navigate('AddEmploye')}}
+                        />
+                         <DrawerItem 
                             icon={({color, size}) => (
                                 <Icon
                                 name="account-multiple-outline" 
@@ -149,6 +201,10 @@ export function DContent (props) {
                             label="Liste des Employés"
                             onPress={() => {props.navigation.navigate('ListEmploye')}}
                         />
+                          </> : null
+                        }
+                      
+                       
                           </View>
                          : null
 

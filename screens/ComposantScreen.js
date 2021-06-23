@@ -1,5 +1,5 @@
 import React , {useState , useEffect} from 'react';
-import {View , Text , StyleSheet , FlatList , ScrollView , TouchableOpacity} from 'react-native';
+import {View , Text , StyleSheet , FlatList , Platform , TouchableOpacity} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import administrateur from '../classes/administrateur';
 
@@ -16,6 +16,10 @@ const ComposantScreen  = (props) =>  {
 
   const  {composantTitle , productTitle} =  props.route.params;
   
+  const colonne = ()=>{
+    return Platform.OS == 'web' ? 2 : 1
+
+  }
 
 
   const assignerTicket = async(itemId , employeEmail) => {
@@ -30,9 +34,9 @@ const ComposantScreen  = (props) =>  {
     return (
       assign ? <>
       <Text style = {styles.title}> Les Employés : </Text>
-      <ScrollView>
+     
      <View style={styles.container2}>
-    <FlatList style={styles.container} keyExtractor = { e => e.name} data = {employes} renderItem = {({item}) =>
+    <FlatList style={styles.container} numColumns={colonne()} keyExtractor = { e => e._id} data = {employes} renderItem = {({item}) =>
     <View style = {styles.list}>
       <View style = {styles.listRow}> 
         <Text style = {styles.listItem}>{item.name} </Text>
@@ -49,16 +53,15 @@ const ComposantScreen  = (props) =>  {
       }/>
 </View>
 
-     </ScrollView>
+     
 
       
       
       </>:
         <>
  <Text style = {styles.title}> Les Tickets : </Text>
-     <ScrollView>
-     <View style={styles.container2}>
-    <FlatList style={styles.container} keyExtractor = { e => e.name} data = {list} renderItem = {({item}) =>
+ 
+    <FlatList style={styles.container}  numColumns={colonne()} keyExtractor = { e => e._id} data = {list} renderItem = {({item}) =>
     <View style = {styles.list}>
       <View style = {styles.listRow}>
         <Text style = {styles.ticketTitle}> Titre : </Text>  
@@ -103,9 +106,8 @@ const ComposantScreen  = (props) =>  {
     </View>
 
       }/>
-</View>
 
-     </ScrollView>
+
 
 
 </>
@@ -122,7 +124,7 @@ const styles = StyleSheet.create({
     },
     
     list : {
-     
+     flex : 1,
       padding : 20,
       margin : 20,
       borderWidth : 2,
@@ -153,10 +155,12 @@ const styles = StyleSheet.create({
         width : '100%'
     },
     container : {
+   
       flexDirection : 'column',
+      
     },
     container2 : {
-      flexDirection : 'row',
+      width : '100%'
     },
     appButtonContainer: {
         marginTop : 20,

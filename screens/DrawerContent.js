@@ -25,7 +25,7 @@ export function DContent (props) {
   
   //console.log (' admin is '+props.admin);
 
-  const {signOut , name , privilege} = React.useContext(AuthContext);
+  const {signOut , name , privilege , email} = React.useContext(AuthContext);
     const paperTheme = useTheme();
     const [isDarkTheme, setIsDarkTheme] = useState(false);
     const [gclient, setGclient] = useState(false);
@@ -53,7 +53,7 @@ export function DContent (props) {
                   <View style = {{marginLeft : 15 , flexDirection: 'column'}}>
                   <Title style = {styles.title}>{name}</Title>
                   <Caption style = {styles.caption}>
-                   @mahdi.901
+                   {email}
                   </Caption>
                   </View>
               </View>

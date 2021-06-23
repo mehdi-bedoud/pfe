@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View , Button , FlatList , ScrollView , LogBox, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View , Button , FlatList  , LogBox, TouchableOpacity , Platform} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import React, { useContext, useEffect, useReducer, useState } from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -25,15 +25,15 @@ const setProductTitle = (title)=> {
   ProductTitle = title;
   return
 }
+const colonne = ()=>{
+  return Platform.OS == 'web' ? 8 : 1
 
+}
+const colonneTicket = ()=>{
+  return Platform.OS == 'web' ? 2 : 1
+
+}
   
-
-
-// here it must be a useEffect to bring data from db depending on admin value ;
-// so importing th callBack function that executes the dispatch and then use it inside useEffect so : 
-
-
-//const [selectedValue , setSelectedValue] = useState()
 const start = async() => {
 
   switch (props.privilege){
@@ -50,10 +50,10 @@ useEffect(() => {start()}, [props]);
        props.privilege == 'admin' ? 
         <>
         <Text style = {styles.title}> Les Produits : </Text>
-     <ScrollView style = {styles.container}>
-     <View >
+     
+     
  
-     <FlatList style={styles.container} keyExtractor = { e => e._id} data = {list} renderItem = {({item}) =>
+     <FlatList  numColumns={colonne()} keyExtractor = { e => e._id} data = {list} renderItem = {({item}) =>
    <TouchableOpacity onPress = {()=>{
      setProductTitle(item.title);
     props.navigation.navigate('ProductScreen')
@@ -66,16 +66,16 @@ useEffect(() => {start()}, [props]);
    </TouchableOpacity>
 
       }/>
-</View>
-     </ScrollView>
+
+  
 
         </>
         : props.privilege == 'client' ?  
       <>
-      <Text style = {styles.title}> Les Tickets Ouverts : </Text>
-     <ScrollView>
+      <Text style = {styles.title}> Les Tickets Créés : </Text>
+   
      <View style={styles.container2}>
-    <FlatList style={styles.container} keyExtractor = { e => e._id} data = {list} renderItem = {({item}) =>
+    <FlatList style={styles.container} numColumns={colonneTicket()} keyExtractor = { e => e._id} data = {list} renderItem = {({item}) =>
     <View style = {styles.list}>
       <View style = {styles.listRow}>
         <Text style = {styles.ticketTitle}> Titre : </Text>  
@@ -93,13 +93,13 @@ useEffect(() => {start()}, [props]);
 
       }/>
 </View>
-     </ScrollView>
+    
 </>  : props.privilege == 'employe' ? 
  <>
  <Text style = {styles.title}> Les Tickets Assignés: </Text>
-     <ScrollView>
+    
      <View style={styles.container2}>
-    <FlatList style={styles.container} keyExtractor = { e => e._id} data = {list} renderItem = {({item}) =>
+    <FlatList style={styles.container} numColumns={colonneTicket()} keyExtractor = { e => e._id} data = {list} renderItem = {({item}) =>
     <View style = {styles.list}>
       <View style = {styles.listRow}>
         <Text style = {styles.ticketTitle}> Titre : </Text>  
@@ -128,7 +128,7 @@ useEffect(() => {start()}, [props]);
 
       }/>
 </View>
-     </ScrollView>
+
 
 
 </> : null
@@ -201,14 +201,14 @@ const styles = StyleSheet.create({
   },
   
   list : {
-   
     padding : 20,
     margin : 20,
     borderWidth : 2,
-    
+    flex: 1 ,
     borderRadius: 15,
     borderColor : '#009688',
-  },
+    justifyContent : 'space-between',
+      },
 
   listItem: {
     marginTop : 5 , 
@@ -217,6 +217,7 @@ const styles = StyleSheet.create({
     borderRadius : 15,
     borderWidth : 1,
     width : '100%',
+
 
     
   },

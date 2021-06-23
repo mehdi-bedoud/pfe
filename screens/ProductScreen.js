@@ -1,5 +1,5 @@
 import React ,  {useState , useEffect} from 'react';
-import {View , Text , StyleSheet , ScrollView , TouchableOpacity , FlatList} from 'react-native';
+import {View , Text , StyleSheet  , TouchableOpacity , FlatList} from 'react-native';
 import administrateur from '../classes/administrateur';
 
 
@@ -20,9 +20,9 @@ const ProductScreen  = (props) =>  {
     return (
         <>
         <Text style = {styles.title}> Les Composants : </Text>
-     <ScrollView style = {styles.container}>
+   
      <View >
-    <FlatList   keyExtractor = { e => e.name} data = {list} renderItem = {({item}) =>
+    <FlatList   keyExtractor = { e => e._id} data = {list} renderItem = {({item}) =>
     <View style = {styles.list}>
       <View style = {styles.listRow}>
          <TouchableOpacity onPress = {()=> {
@@ -37,7 +37,7 @@ const ProductScreen  = (props) =>  {
 
       }/>
 </View>
-     </ScrollView>
+
 
         </>
 

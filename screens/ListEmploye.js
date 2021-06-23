@@ -1,6 +1,8 @@
 import React, { useEffect , useState } from 'react';
-import {Text , StyleSheet , View , FlatList, TouchableOpacity} from 'react-native';
+import {Text , StyleSheet , View , FlatList, TouchableOpacity , TextInput} from 'react-native';
 import administrateur from '../classes/administrateur';
+import Feather from 'react-native-vector-icons/Feather';
+
 
 const EmployeList = (props)=>{
   const [list , setList] = useState();
@@ -14,6 +16,31 @@ getEmployes();
     },[])
 return (
     <>
+           <View style = {styles.action}>
+            <Feather 
+                    name="search"
+                    size={20}
+                    color = '#707070'
+                />
+                <TextInput 
+                   placeholder = 'Search' 
+                 
+                   style = {styles.textInput} 
+                   onChangeText = {(val)=>{} }
+                  
+
+                ></TextInput>
+                 <TouchableOpacity onPress = {()=>{}}>
+                    <Feather 
+                        name='x'
+                        color='#b8b8b8'
+                        size={20}
+                       
+                        
+                    />
+         
+                 </TouchableOpacity>
+            </View>
 <Text style = {styles.title}>Liste des Employés : </Text>
 
 <FlatList style={styles.container} keyExtractor = { e => e._id} data = {list} renderItem = {({item}) =>
@@ -47,7 +74,7 @@ export default EmployeList;
 
 const styles = StyleSheet.create({
     title : {
-      fontSize : 30,
+      fontSize : 25,
       fontWeight : 'bold',
       margin: 10,
     },
@@ -74,7 +101,7 @@ const styles = StyleSheet.create({
     },
   
     ticketTitle :{
-      fontSize : 30,
+      fontSize : 22,
       fontWeight : 'bold',
        paddingTop : 5 ,
      
@@ -84,12 +111,9 @@ const styles = StyleSheet.create({
         width : '100%'
     },
     container : {
-      margin : 20,
-      flexDirection : 'column',
-      padding : 20,
-      borderWidth : 1,
-      borderRadius : 20,
-      borderColor : '#009387',
+
+      flexDirection : 'row',
+ 
     },
     button: {
       alignItems: 'center',
@@ -113,4 +137,22 @@ const styles = StyleSheet.create({
       alignSelf: "center",
       
     },
+    action: {
+      flexDirection: 'row',
+      marginTop: 25,
+      borderWidth: 1,
+      borderColor: '#3D3D3D',
+      borderRadius : 20,
+      paddingVertical: 5,
+      paddingHorizontal: 10,
+      alignItems : 'center',
+      alignSelf : 'center',
+      width : '80%'
+  },
+  textInput: {
+    flex: 1,
+   // marginTop: Platform.OS === 'ios' ? 0 : -12,
+    paddingLeft: 10,
+    color: '#05375a',
+},
   });

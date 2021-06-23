@@ -122,7 +122,7 @@ export default TicketScreen;
 const styles = StyleSheet.create({
     container: {
       margin : 15,
-      marginTop : 50,
+      marginTop : 30,
       borderWidth : 2,
       borderRadius : 25,
       borderColor : '#009387',
@@ -225,9 +225,7 @@ const styles = StyleSheet.create({
       },
       
   ticketTitle :{
-    fontSize : 30,
+    fontSize : 22,
     fontWeight : 'bold',
-    marginBottom : 5,
-   
     },
   });

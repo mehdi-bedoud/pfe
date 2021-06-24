@@ -1,12 +1,20 @@
 import React ,  {useState , useEffect} from 'react';
-import {View , Text , StyleSheet  , TouchableOpacity , FlatList} from 'react-native';
+import {View , Text , StyleSheet  , TouchableOpacity , TextInput, FlatList} from 'react-native';
 import administrateur from '../classes/administrateur';
+import Feather from 'react-native-vector-icons/Feather';
 
 
 
 const ProductScreen  = (props) =>  {
   var composantTitle;
   const [list , setList] = useState();
+  const [value , setValue] = useState();
+  const [search , setSearch] = useState(false);
+  const [filteredList , setFilteredList] = useState();
+  const remplirValue = (val)=>{
+    setValue(val)
+   
+  }
 
   const setComposantTitle = (title)=> {
     composantTitle = title;
@@ -19,24 +27,84 @@ const ProductScreen  = (props) =>  {
 
     return (
         <>
-        <Text style = {styles.title}> Les Composants : </Text>
-   
-     <View >
-    <FlatList   keyExtractor = { e => e._id} data = {list} renderItem = {({item}) =>
-    <View style = {styles.list}>
-      <View style = {styles.listRow}>
-         <TouchableOpacity onPress = {()=> {
-           setComposantTitle(item.title)
-           props.navigation.navigate("ComposantScreen",{composantTitle : composantTitle , 
-            productTitle : props.ProductTitle }) }}>
-         <Text style = {styles.ticketTitle}> {item.title} </Text> 
-         </TouchableOpacity>
-      </View>
-    
-    </View>
+          <View style = {styles.action}>
+     <TouchableOpacity onPress = {()=>{
+       setFilteredList(list.filter(e => e.title == value))
+       setSearch(true)
+     }}>
+     <Feather 
+                    name="search"
+                    size={20}
+                    color = '#707070'
+                />
+     </TouchableOpacity>
+                <TextInput 
+                   placeholder = {value}
+                 
+                   style = {styles.textInput} 
+                   onChangeText = {(val)=>{
+                    remplirValue(val) 
+                   }}
 
-      }/>
+                  
+
+                ></TextInput>
+                 <TouchableOpacity onPress = {()=>{
+                   setSearch(false)
+                 }}>
+                    <Feather 
+                        name='x'
+                        color='#b8b8b8'
+                        size={20}
+                       
+                        
+                    />
+         
+                 </TouchableOpacity>
+            </View>
+       {
+         !search ?
+          <>
+           <Text style = {styles.title}> Les Composants : </Text>
+   
+   <View >
+  <FlatList   keyExtractor = { e => e._id} data = {list} renderItem = {({item}) =>
+  <View style = {styles.list}>
+    <View style = {styles.listRow}>
+       <TouchableOpacity onPress = {()=> {
+         setComposantTitle(item.title)
+         props.navigation.navigate("ComposantScreen",{composantTitle : composantTitle , 
+          productTitle : props.ProductTitle }) }}>
+       <Text style = {styles.ticketTitle}> {item.title} </Text> 
+       </TouchableOpacity>
+    </View>
+  
+  </View>
+
+    }/>
 </View>
+         </> : 
+         <>
+          <Text style = {styles.title}> Les Composants : </Text>
+   
+   <View >
+  <FlatList   keyExtractor = { e => e._id} data = {filteredList} renderItem = {({item}) =>
+  <View style = {styles.list}>
+    <View style = {styles.listRow}>
+       <TouchableOpacity onPress = {()=> {
+         setComposantTitle(item.title)
+         props.navigation.navigate("ComposantScreen",{composantTitle : composantTitle , 
+          productTitle : props.ProductTitle }) }}>
+       <Text style = {styles.ticketTitle}> {item.title} </Text> 
+       </TouchableOpacity>
+    </View>
+  
+  </View>
+
+    }/>
+</View>
+         </>
+       }
 
 
         </>
@@ -91,7 +159,25 @@ const styles = StyleSheet.create({
     },
     container2 : {
       flexDirection : 'row',
-    }
+    },
+    action: {
+      flexDirection: 'row',
+      marginTop: 25,
+      borderWidth: 1,
+      borderColor: '#3D3D3D',
+      borderRadius : 20,
+      paddingVertical: 5,
+      paddingHorizontal: 10,
+      alignItems : 'center',
+      alignSelf : 'center',
+      width : '80%'
+  },
+  textInput: {
+    flex: 1,
+   // marginTop: Platform.OS === 'ios' ? 0 : -12,
+    paddingLeft: 10,
+    color: '#05375a',
+},
   });
 
 

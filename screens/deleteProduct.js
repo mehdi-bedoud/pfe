@@ -13,7 +13,7 @@ import {
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {Picker} from '@react-native-picker/picker';
 import administrateur from '../classes/administrateur';
-import { setMaxListeners } from '../../backend/models/produitModel';
+
 
 
 const deleteProduit = ({navigation}) => {

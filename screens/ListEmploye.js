@@ -6,31 +6,49 @@ import Feather from 'react-native-vector-icons/Feather';
 
 const EmployeList = (props)=>{
   const [list , setList] = useState();
-
+  const [value , setValue] = useState();
+  const [search , setSearch] = useState(false);
+  const [filteredList , setFilteredList] = useState();
+  const remplirValue = (val)=>{
+    setValue(val)
+   
+  }
   const getEmployes = async()=>{
     setList(await administrateur.getAll('employe'))
   }
+  
+
+
+
 
     useEffect (()=> {
 getEmployes();
-    },[])
+    },[search])
 return (
     <>
            <View style = {styles.action}>
-            <Feather 
+     <TouchableOpacity onPress = {()=>{
+       setFilteredList(list.filter(e => e.email == value))
+       setSearch(true)
+     }}>
+     <Feather 
                     name="search"
                     size={20}
                     color = '#707070'
                 />
+     </TouchableOpacity>
                 <TextInput 
-                   placeholder = 'Search' 
+                   placeholder = {value}
                  
                    style = {styles.textInput} 
-                   onChangeText = {(val)=>{} }
+                   onChangeText = {(val)=>{
+                    remplirValue(val) 
+                   }}
+
                   
 
                 ></TextInput>
-                 <TouchableOpacity onPress = {()=>{}}>
+                 <TouchableOpacity onPress = {()=>setSearch(false)}>
                     <Feather 
                         name='x'
                         color='#b8b8b8'
@@ -43,7 +61,9 @@ return (
             </View>
 <Text style = {styles.title}>Liste des Employés : </Text>
 
-<FlatList style={styles.container} keyExtractor = { e => e._id} data = {list} renderItem = {({item}) =>
+{
+  !search ?
+  <FlatList  keyExtractor = { e => e._id} data = {list} renderItem = {({item}) =>
     <View style = {styles.list}>
       <View style = {styles.listRow}>
         <Text style = {styles.ticketTitle}> Nom Complet : </Text>  
@@ -57,6 +77,27 @@ return (
     </View>
 
       }/>
+      : <>
+       
+        <FlatList  keyExtractor = { e => e._id} data = {filteredList} renderItem = {({item}) => 
+       <View style = {styles.list}>
+          <View style = {styles.listRow}>
+            <Text style = {styles.ticketTitle}> Nom Complet : </Text>  
+            <Text style = {styles.listItem}>{item.name} </Text>
+          </View>
+          <View style = {styles.listRow}>
+            <Text style = {styles.ticketTitle}> email : </Text>  
+            <Text style = {styles.listItem}>{item.email} </Text>
+          </View>
+    
+        </View> 
+    
+   
+
+      }/>
+      
+      </>
+}
       <View style = {styles.button}>
                 <TouchableOpacity style= {styles.appButtonContainer} onPress = {()=>props.navigation.goBack()} >
                     <Text style = {styles.appButtonText }>Retour</Text>

@@ -53,7 +53,7 @@ if (data) alert ('user removed ')
 
 
     }
-    static async getAll(privilege){
+    static async getAll(privilege ){
       try{
         const {data} = await Axios.get('/api/users/all/'+privilege )
         return (data);

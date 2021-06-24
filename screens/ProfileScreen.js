@@ -12,6 +12,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import Icon from 'react-native-vector-icons/Ionicons';
 import User from '../classes/User';
+var ImagePicker = require('react-native-image-picker');
 
 export default function ProfileScreen(props){
 
@@ -21,6 +22,7 @@ const [password1 , setPassword1] = useState('');
 const [password2 , setPassword2] = useState('');
 const [changeMail , setChangeMail] = useState(false);
 const [changePassword , setChangePassword] = useState(false);
+const [photo , setPhoto]  = useState('https://scontent.fqsf1-1.fna.fbcdn.net/v/t1.6435-9/105302996_3000515003407569_4753253622044843753_n.jpg?_nc_cat=111&ccb=1-3&_nc_sid=09cbfe&_nc_eui2=AeG6vva93D6pMvScKuE9uDAJWma1mucI77daZrWa5wjvtxi9Ja1j2rbMbMHdRbovlAzOMaiYKesuINgQ4GpfLbhW&_nc_ohc=2FzdIJ8HA40AX-njO7F&_nc_ht=scontent.fqsf1-1.fna&oh=f4a8beab5505de281f562fc449faf958&oe=60D2BA15');
 
 const changeEmail = async()=>{
     const resultat = await User.Login(props.email , password)
@@ -36,13 +38,25 @@ const changeEmail = async()=>{
 const changeMdp = async()=>{
     const resultat = await User.Login(props.email , password)
     if (resultat){
-        await User.valideReset(props.email , password);
-        props.navigation.goBack();
-        alert('mot de passe mis à jour :)')
+        if (password1 == password2){
+            await User.valideReset(props.email , password);
+            props.navigation.goBack();
+            alert('mot de passe mis à jour :)')
+        }else {
+            alert ('les mots de passes ne sont pas identiques')
+        }
+     
     }else{
         alert('le mot de passe n\'est pas juste')
 
     }
+
+}
+const choosePhoto = ()=>{
+  // ImagePicker.launchImageLibrary({noData : true,}, response =>{
+    //    setPhoto(response.uri)
+         
+    
 
 }
 
@@ -60,11 +74,11 @@ const changeMdp = async()=>{
     <View style = {{marginTop : 100 , margin : 15}}>
       <View style= {{alignItems : 'center' , marginBottom : 30 }}>
       <Avatar.Image source = {{
-                      uri :'https://scontent.fqsf1-1.fna.fbcdn.net/v/t1.6435-9/105302996_3000515003407569_4753253622044843753_n.jpg?_nc_cat=111&ccb=1-3&_nc_sid=09cbfe&_nc_eui2=AeG6vva93D6pMvScKuE9uDAJWma1mucI77daZrWa5wjvtxi9Ja1j2rbMbMHdRbovlAzOMaiYKesuINgQ4GpfLbhW&_nc_ohc=2FzdIJ8HA40AX-njO7F&_nc_ht=scontent.fqsf1-1.fna&oh=f4a8beab5505de281f562fc449faf958&oe=60D2BA15' ,
+                      uri :photo ,
                  }}
                  size = {80}
                   />
-      <TouchableOpacity>
+      <TouchableOpacity onPress = {choosePhoto()}>
             <Text style = {{color : 'blue' , marginTop : 5}} >Changer votre photo de Profil</Text>
             </TouchableOpacity>   
        </View>

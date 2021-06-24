@@ -15,7 +15,7 @@ import {
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import Icon2 from 'react-native-vector-icons/Ionicons'
 import{ AuthContext } from '../components/Context';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 
 
@@ -85,8 +85,11 @@ export function DContent (props) {
                       
                         {
                           privilege == 'admin' ? 
-                          <View>
-                                <DrawerItem 
+                          <View >
+                           <View style ={{flexDirection : 'row' , alignItems : 'center'}}>
+                             
+                           <DrawerItem style = {{flex : 2 , marginRight : 0 }}
+                                     label="gestion des produits"
                             icon={({color, size}) => (
                                 <Icon2 
                                 name="settings-outline" 
@@ -94,16 +97,27 @@ export function DContent (props) {
                                 size={size}
                                 />
                             )}
-                            label="gestion des produits"
+                       
                             onPress={() => {setGprod(!gprod)}}
                             //onPress={() => {props.navigation.navigate('addComposant')}}
                         />
+                        <Icon2 
+                                name={!gprod ? "ios-chevron-down" : "ios-chevron-up" }
+                                color='black'
+                                size={20}
+                             style = {{marginRight : 20}}
+                                />
+                           </View>
+                         
+                        
+
+                       
                          {
                           gprod ?<>
                              <DrawerItem 
                             icon={({color, size}) => (
                                 <Icon2 
-                                name="settings-outline" 
+                                name="ios-add-sharp" 
                                 color={color}
                                 size={size}
                                 />
@@ -115,7 +129,7 @@ export function DContent (props) {
                                <DrawerItem 
                             icon={({color, size}) => (
                                 <Icon2 
-                                name="settings-outline" 
+                                name="ios-add-sharp" 
                                 color={color}
                                 size={size}
                                 />
@@ -124,22 +138,53 @@ export function DContent (props) {
                 
                             onPress={() => {props.navigation.navigate('addComposant')}}
                         />
-                   
-                          </> :null
-                        }
-                       
-                      
-                              <DrawerItem 
+                        <DrawerItem 
                             icon={({color, size}) => (
                                 <Icon
-                                name="account-plus-outline" 
+                                name="puzzle-remove-outline" 
                                 color={color}
                                 size={size}
                                 />
                             )}
-                            label="Gestion des clients"
-                            onPress={() => {setGclient(!gclient)}}
+                            label="Supprimer composant"
+                            onPress={() => {props.navigation.navigate('deleteComposant')}}
                         />
+                        <DrawerItem 
+                            icon={({color, size}) => (
+                                <Icon
+                                name="puzzle-remove" 
+                                color={color}
+                                size={size}
+                                />
+                            )}
+                            label="Supprimer Produit"
+                            onPress={() => {props.navigation.navigate('deleteProduit')}}
+                        />
+                   
+                          </> :null
+                        }
+                   
+                   <View style ={{flexDirection : 'row' , alignItems : 'center'}}>
+                          <DrawerItem style = {{flex : 2 , marginRight : 0}}
+                              icon={({color, size}) => (
+                                  <Icon
+                                    name="account-plus-outline" 
+                                       color={color}
+                                        size={size}
+                                              />
+                                            )}
+                                          label="Gestion des clients"
+                                    onPress={() => {setGclient(!gclient)}}
+                                          />
+                                            <Icon2 
+                                              name={!gclient ? "ios-chevron-down" : "ios-chevron-up" }
+                                              color='black'
+                                              size={20}
+                                              style = {{marginRight : 20}}
+
+                                              />
+                                          </View>
+    
                         {
                           gclient ?<>
                              <DrawerItem 
@@ -166,7 +211,8 @@ export function DContent (props) {
                         />
                           </> : null
                         }
-                         <DrawerItem 
+                      <View style ={{flexDirection : 'row' , alignItems : 'center'}}>
+                      <DrawerItem style = {{flex : 2 , marginRight : 0}}
                             icon={({color, size}) => (
                                 <Icon
                                 name="account-network" 
@@ -177,6 +223,14 @@ export function DContent (props) {
                             label="Gestion de employés"
                             onPress={() => {setGemploye(!gemploye)}}
                         />
+                           <Icon2 
+                                              name={!gemploye ? "ios-chevron-down" : "ios-chevron-up" }
+                                              color='black'
+                                              size={20}
+                                              style = {{marginRight : 20}}
+
+                                              />
+                      </View>
                         {
                           gemploye ? <>
                             <DrawerItem 
@@ -275,6 +329,7 @@ const styles = StyleSheet.create({
     },
     drawerSection: {
       marginTop: 15,
+      marginLeft : -5,
     },
     bottomDrawerSection: {
         marginBottom: 15,
@@ -288,3 +343,9 @@ const styles = StyleSheet.create({
       paddingHorizontal: 16,
     },
   });
+
+
+
+
+
+

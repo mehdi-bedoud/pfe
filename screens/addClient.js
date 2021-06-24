@@ -28,8 +28,12 @@ const [password1 , setPassword1 ] = useState('');
 const [password2 , setPassword2 ] = useState('');
 
 const addUser = ()=>{
-    if (name.length != 0 && mail.length != 0 && password1.length !=0 && password1 == password2)
-    administrateur.addUser({name , mail , password1 , privilege : 'client'})
+    if (name.length != 0 && mail.length != 0 && password1.length !=0 && password1 == password2){
+        administrateur.addUser({name , mail , password1 , privilege : 'client'})
+    }else{
+        alert('verifier vos données')
+    }
+  
 }
 
     return (
@@ -105,7 +109,10 @@ const addUser = ()=>{
                 
             </View>
             <View style = {styles.button}>
-                <TouchableOpacity style= {styles.appButtonContainer} onPress = {()=>addUser()} >
+                <TouchableOpacity style= {styles.appButtonContainer} onPress = {()=>{
+                    addUser()
+                    navigation.goBack();
+                }} >
                     <Text style = {styles.appButtonText }>Ajouter un Client</Text>
                 </TouchableOpacity>
             </View >

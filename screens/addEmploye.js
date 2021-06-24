@@ -103,7 +103,10 @@ const addUser = ()=>{
                 
             </View>
             <View style = {styles.button}>
-                <TouchableOpacity style= {styles.appButtonContainer} onPress = {()=>addUser()} >
+                <TouchableOpacity style= {styles.appButtonContainer} onPress = {()=>{
+                    addUser()
+                    navigation.goBack();
+                }} >
                     <Text style = {styles.appButtonText }>Ajouter un Employé</Text>
                 </TouchableOpacity>
             </View >

@@ -6,19 +6,22 @@ import {
     TextInput,
     StyleSheet ,
     StatusBar,
-    Alert
+    Alert,
+    FlatList,
 } from 'react-native';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {Picker} from '@react-native-picker/picker';
 import administrateur from '../classes/administrateur';
+import { setMaxListeners } from '../../backend/models/produitModel';
 
 
-const AddComposant = ({navigation}) => {
+const deleteComposant = ({navigation}) => {
 
 const [title , setTitle ] = useState('');
-const [produit , setProduit] = useState('');
+const [produit , setProduit] = useState();
 const [produits , setProduits] = useState();
+const [list , setList] = useState();
 
 const addProduct = async()=>{
     if (title.length != 0 )
@@ -34,7 +37,7 @@ const getProducts = async() => {
 
     useEffect( ()=> {
         getProducts();
-      } , [])
+      } , [produits])
 
 
     return (
@@ -43,35 +46,22 @@ const getProducts = async() => {
 
 
         <View style={styles.header}>
-            <Text style={styles.text_header}>Ajouter Un Composant</Text>
+            <Text style={styles.text_header}>Supprimer Un Composant</Text>
         </View>
 
 
         <View style ={styles.footer} >
-            <Text>Nom de Composant </Text>
+           
 
 
-
-            <View style = {styles.action}>
-            <FontAwesome 
-                    name="user-o"
-                    size={20}
-                />
-                 <TextInput 
-                   placeholder = 'Entrer le titre du composant' 
-                   style = {styles.textInput} 
-                   onChangeText = {(val)=>setTitle(val) }
-                  
-
-                ></TextInput>
-               
-                </View>
-
-                <Text style = {{marginTop : 20}}>Nom de Produit </Text>
+                <Text style = {{marginTop : 20 , fontSize : 20 ,  fontWeight : 'bold'}}>Nom de Produit </Text>
                 <Picker
       selectedValue={produit}
         style={{ height: 50, width: 150 ,margin : 10,paddingLeft : 10}}
-        onValueChange={(itemValue) => setProduit(itemValue)}
+        onValueChange={async(itemValue) => {
+            setProduit(itemValue);
+           setList( await administrateur.getComposants(itemValue))
+        }}
       >
         
        {
@@ -82,17 +72,29 @@ const getProducts = async() => {
             }) : null 
        }
       </Picker>
+      {
+          produit ? <>
+          <Text style = {{fontSize : 20 ,  fontWeight : 'bold' ,marginBottom : 10, marginTop : 10}}> Les composants : </Text>
+          <Text style = {{paddingBottom : 5}}>cliquer sur le composant pour le supprimer</Text>
+             <FlatList   keyExtractor = { e => e._id} data = {list} renderItem = {({item}) =>
+   <TouchableOpacity onPress = {async()=>{
+       await administrateur.deleteComposant(item.title)
+      setProduits(produits.concat(['']))
+      navigation.goBack();
+       alert('composant supprimé ;)')
+   }}>
+      <View style = {styles.list}>
+      <View style = {styles.listRow}>
+        <Text style = {{ fontWeight : 'bold' , fontSize : 18}}> {item.title} </Text>  
+      </View>
+    </View>
+   </TouchableOpacity>
 
+      }/>
+          
+          </> : null 
+      }
 
-            
-            <View style = {styles.button}>
-                <TouchableOpacity style= {styles.appButtonContainer} onPress = {()=>{
-                    addProduct();
-                    navigation.goBack();
-                }} >
-                    <Text style = {styles.appButtonText }>Ajouter le Composant</Text>
-                </TouchableOpacity>
-            </View >
             <View style = {styles.button}>
                 <TouchableOpacity style= {styles.appButtonContainer} onPress = {()=>navigation.goBack()} >
                     <Text style = {styles.appButtonText }>Retour</Text>
@@ -110,7 +112,7 @@ const getProducts = async() => {
 }
 
 
-export default AddComposant;
+export default deleteComposant;
 
 const styles = StyleSheet.create({
     container: {
@@ -184,6 +186,15 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         
       },
+      list : {
+        padding : 20,
+  
+        borderWidth : 3,
+        flex: 1 ,
+        borderRadius: 15,
+        borderColor : '#009688',
+        justifyContent : 'space-between',
+          },
    
   });
 

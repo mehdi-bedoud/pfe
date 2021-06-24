@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View,
      Text ,
      TouchableOpacity,
@@ -11,11 +11,40 @@ import { View,
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import Icon from 'react-native-vector-icons/Ionicons';
+import User from '../classes/User';
 
 export default function ProfileScreen(props){
 
-const [email, setEmail] = React.useState('');
-const [password , setPassword] = React.useState('');
+const [email, setEmail] = useState('');
+const [password , setPassword] = useState('');
+const [password1 , setPassword1] = useState('');
+const [password2 , setPassword2] = useState('');
+const [changeMail , setChangeMail] = useState(false);
+const [changePassword , setChangePassword] = useState(false);
+
+const changeEmail = async()=>{
+    const resultat = await User.Login(props.email , password)
+    if (resultat){
+        await User.setEmail(props.email , email)
+        props.navigation.goBack();
+        alert('email mis à jour :)')
+    }else{
+        alert('le mot de passe n\'est pas juste')
+
+    }
+}
+const changeMdp = async()=>{
+    const resultat = await User.Login(props.email , password)
+    if (resultat){
+        await User.valideReset(props.email , password);
+        props.navigation.goBack();
+        alert('mot de passe mis à jour :)')
+    }else{
+        alert('le mot de passe n\'est pas juste')
+
+    }
+
+}
 
     return <><Header
     leftComponent={ <Icon.Button name = "menu" backgroundColor = '#009387' size = {25} onPress = { () => props.navigation.openDrawer()}/>}
@@ -28,7 +57,6 @@ const [password , setPassword] = React.useState('');
 
   />
     
-    
     <View style = {{marginTop : 100 , margin : 15}}>
       <View style= {{alignItems : 'center' , marginBottom : 30 }}>
       <Avatar.Image source = {{
@@ -40,15 +68,15 @@ const [password , setPassword] = React.useState('');
             <Text style = {{color : 'blue' , marginTop : 5}} >Changer votre photo de Profil</Text>
             </TouchableOpacity>   
        </View>
-
-            <Text>Email</Text>
+       { changeMail ? <>
+        <Text>Nouveau EMail</Text>
             <View style = {styles.action}>
             <FontAwesome 
                     name="user-o"
                     size={20}
                 />
                 <TextInput 
-                   value = {'mehdi'}
+                  placeholder = 'entrer le nouveau email'
                    style = {styles.textInput} 
                    onChangeText = {(val)=>setEmail(val) }
                   
@@ -65,7 +93,7 @@ const [password , setPassword] = React.useState('');
                     size={20}
                 />
                 <TextInput 
-                   placeholder = 'Changer votre mot de passe' 
+                   placeholder = 'Tapez votre mot de passe actuel' 
                  
                    style = {styles.textInput} 
                    onChangeText = {(val)=>setPassword(val) }
@@ -74,10 +102,104 @@ const [password , setPassword] = React.useState('');
                 ></TextInput>
             </View>
             <View style = {styles.button}>
-                <TouchableOpacity style= {styles.appButtonContainer} onPress = {() => { signIn(data.email , data.password) }} >
+                <TouchableOpacity style= {styles.appButtonContainer} onPress = {() => { if (email) {
+                    changeEmail()
+                }else{
+                    alert('vous devez remplir l\'email')
+                }
+                }} >
+                    <Text style = {styles.appButtonText }>Sauvegarder</Text>
+                </TouchableOpacity>
+        </View> </> : null
+
+       }
+       {
+           changePassword ? <>
+       {/* mot de passe  */}
+            <Text style ={{marginTop : 35}} >Ancien mot de passe</Text>
+
+            <View style = {styles.action}>
+            <Feather 
+                    name="lock"
+                    size={20}
+                />
+                <TextInput 
+                   placeholder = 'Tapez votre ancien mot de passe' 
+                 
+                   style = {styles.textInput} 
+                   onChangeText = {(val)=>setPassword(val) }
+                  
+
+                ></TextInput>
+            </View>
+            <Text style ={{marginTop : 35}} >Nouveau mot de passe</Text>
+
+            <View style = {styles.action}>
+            <Feather 
+                    name="lock"
+                    size={20}
+                />
+                <TextInput 
+                   placeholder = 'Entrer le nouveau mot de passe' 
+                 
+                   style = {styles.textInput} 
+                   onChangeText = {(val)=>setPassword1(val) }
+                  
+
+                ></TextInput>
+            </View>
+            <Text style ={{marginTop : 35}} >Confirmer nouveau mot de passe</Text>
+
+            <View style = {styles.action}>
+            <Feather 
+                    name="lock"
+                    size={20}
+                />
+                <TextInput 
+                   placeholder = 'Confirmer le nouveau mot de passe' 
+                 
+                   style = {styles.textInput} 
+                   onChangeText = {(val)=>setPassword2(val) }
+                  
+
+                ></TextInput>
+            </View>
+
+
+
+            <View style = {styles.button}>
+                <TouchableOpacity style= {styles.appButtonContainer} onPress = {() => { changeMdp() }} >
                     <Text style = {styles.appButtonText }>Sauvegarder</Text>
                 </TouchableOpacity>
         </View>
+           </> : null 
+       }
+       {
+           (!changeMail && !changePassword) ? <>
+            <View style = {styles.button}>
+                <TouchableOpacity style= {styles.appButtonContainer} onPress = {() => { setChangeMail(true) }} >
+                    <Text style = {styles.appButtonText }>Changer l'email</Text>
+                </TouchableOpacity>
+                </View>
+                <View style = {styles.button}>
+                <TouchableOpacity style= {styles.appButtonContainer} onPress = {() => { setChangePassword(true) }} >
+                    <Text style = {styles.appButtonText }>Changer le mot de passe</Text>
+                </TouchableOpacity>
+                </View>
+           
+           
+           </> : null
+       }
+           <View style = {styles.button}>
+                <TouchableOpacity style= {styles.appButtonContainer} onPress = {() => { props.navigation.goBack();
+                setChangeMail(false);
+                setChangePassword(false) }} >
+                    <Text style = {styles.appButtonText }>Retour</Text>
+                </TouchableOpacity>
+                </View>
+
+
+           
         </View>
    </>
 }

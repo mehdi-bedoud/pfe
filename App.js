@@ -21,6 +21,8 @@ import client from './classes/client';
 import employe from './classes/employe';
 import AddComposant from './screens/addComposantScreen';
 import AddProduit from './screens/addProduitScreen';
+import DeleteComposant from './screens/deleteComposant';
+import DeleteProduit from './screens/deleteProduct';
 
 
 
@@ -143,7 +145,7 @@ if( loginState.isLoading ) {
        !loginState.name ?  <RootStackk/>  :
 <Drawer.Navigator drawerContent = { props => <DContent { ...props} privilege = {loginState.privilege} email = {loginState.email} />}    >
       <Drawer.Screen   children = { props => <Tabs {...props} privilege = {loginState.privilege} email = {loginState.email} />}name = "MainTab"  />
-      <Drawer.Screen   children = {props =><ProfileScreen {...props}/>} name="Profile" />
+      <Drawer.Screen   children = {props =><ProfileScreen {...props} email = {loginState.email}/>} name="Profile" />
       <Drawer.Screen   children = {props =><SignUpScreen {...props}/>} name="SignUpScreen" />
       <Drawer.Screen   children = {props =><ClientListScreen {...props}/>} name="ListClient" />
       <Drawer.Screen   children = {props =><EmployeListScreen {...props}/>} name="ListEmploye" />
@@ -151,6 +153,8 @@ if( loginState.isLoading ) {
       <Drawer.Screen   children = {props =><AddEmploye {...props}/>} name="AddEmploye" />
       <Drawer.Screen   children = {props =><AddComposant {...props}/>} name="addComposant" />
       <Drawer.Screen   children = {props =><AddProduit {...props}/>} name="addProduit" />
+      <Drawer.Screen   children = {props =><DeleteComposant {...props}/>} name="deleteComposant" />  
+      <Drawer.Screen   children = {props =><DeleteProduit {...props}/>} name="deleteProduit" />  
   
     </Drawer.Navigator> 
     }

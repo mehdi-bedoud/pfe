@@ -73,8 +73,12 @@ if (data) alert ('user removed ')
       alert('probleme lors de l\'ajout du produit') ; 
 
     }
-    deleteProduit (){  // suppression produit
-
+    static async deleteProduit (title){  // suppression produit
+      try{
+      await Axios.post('/api/produits/deleteproduit' , {title})
+    }catch(error){
+      alert(error)
+    }
     }
 
     static async getAllProducts (){
@@ -97,7 +101,13 @@ if (data) alert ('user removed ')
       return false  ; 
 
     }
-    deleteComposant(){ //suppression composant 
+    static async deleteComposant(title){ //suppression composant 
+      try {
+        await Axios.post('/api/produits/deletecomposant' , {title})
+      }catch(error){
+        alert(error)
+      }
+
 
     }
     static async  getComposants(produit) {

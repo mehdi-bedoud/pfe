@@ -11,14 +11,24 @@ export default class User {
 
 
     }
+    static async setEmail(email1, email2){
+      try{
+        const {data} =await Axios.post('/api/users/updateemail' , {email1,email2})
+        return(data)
+
+      }catch(error){
+        alert(error)
+
+      }
+     
+    }
+
+ 
  
 
     //-------------------------------
 
-    editProfile(){ // sauvgarde dans la bd 
-      
 
-    }
 
  
 
@@ -75,7 +85,7 @@ static async reset(email){
 static async valideReset(email , password){
   const {data} = await Axios.post ('/api/users/validereset' , {email , password})
   if (data){
-    return (data)
+    return (data)  // return true 
   }
   return null
 }

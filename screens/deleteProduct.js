@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect } from 'react';
 import { 
     View, 
     Text, 
@@ -6,26 +6,39 @@ import {
     TextInput,
     StyleSheet ,
     StatusBar,
-    Alert
+    Alert,
+ 
 } from 'react-native';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-
+import {Picker} from '@react-native-picker/picker';
 import administrateur from '../classes/administrateur';
+import { setMaxListeners } from '../../backend/models/produitModel';
 
 
-const AddProduit = (props) => {
+const deleteProduit = ({navigation}) => {
 
 const [title , setTitle ] = useState('');
+const [produit , setProduit] = useState();
+const [produits , setProduits] = useState();
+const [list , setList] = useState();
 
-const addProduct = ()=>{
-    if (title.length != 0 ){
-        administrateur.addProduit(title)
-    }else{
-        alert('entrer le nom du produit')
-    }
-   
+const addProduct = async()=>{
+    if (title.length != 0 )
+    var data =await administrateur.addComposant(title , produit)
+    if (data ) alert ('Composant ajouté')
+    else alert ('erreur')
 }
+const getProducts = async() => {
+    setProduits(await administrateur.getAllProducts())
+}
+
+
+
+    useEffect( ()=> {
+        getProducts();
+      } , [produits])
+
 
     return (
       <View style={styles.container}>
@@ -33,48 +46,52 @@ const addProduct = ()=>{
 
 
         <View style={styles.header}>
-            <Text style={styles.text_header}>Ajouter Un Produit</Text>
+            <Text style={styles.text_header}>Supprimer Un Produit</Text>
         </View>
 
 
         <View style ={styles.footer} >
-            <Text>Nom de Produit </Text>
+                <Text style = {{marginTop : 20}}>Les Produits </Text>
+                <Picker
+      selectedValue={produit}
+        style={{ height: 50, width: 150 ,margin : 10,paddingLeft : 10}}
+        onValueChange={async(itemValue) => {
+            setProduit(itemValue);
+           setList( await administrateur.getComposants(itemValue))
+        }}
+      >
+        
+       {
+         produits ? 
+         
+           produits.map( (s) => {
+                return <Picker.Item key={s.title} value={s.title} label={s.title} value = {s.title}/>
+            }) : null 
+       }
+      </Picker>
+     
 
-
-
-            <View style = {styles.action}>
-            <FontAwesome 
-                    name="user-o"
-                    size={20}
-                />
-                 <TextInput 
-                   placeholder = 'Entrer le titre de produit' 
-                   style = {styles.textInput} 
-                   onChangeText = {(val)=>setTitle(val) }
-                  
-
-                ></TextInput>
-               
-                </View>
-
-
-            
-            <View style = {styles.button}>
-                <TouchableOpacity style= {styles.appButtonContainer} onPress = {()=>{
-                    addProduct();
-                    props.navigation.goBack();
+<View style = {styles.button}>
+                <TouchableOpacity style= {styles.appButtonContainer} onPress = {async()=>{
+                    await administrateur.deleteProduit(produit)
+                    setProduits([]);
+                    navigation.goBack();
+                    alert('produit supprimé ;)')
                 }} >
-                    <Text style = {styles.appButtonText }>Ajouter un Produit</Text>
+                    <Text style = {styles.appButtonText }>Supprimer le Produit</Text>
                 </TouchableOpacity>
             </View >
+
             <View style = {styles.button}>
-                <TouchableOpacity style= {styles.appButtonContainer} onPress = {()=>props.navigation.goBack()} >
+                <TouchableOpacity style= {styles.appButtonContainer} onPress = {()=>navigation.goBack()} >
                     <Text style = {styles.appButtonText }>Retour</Text>
                 </TouchableOpacity>
             </View >
 
 
         </View>
+
+
         </View>
        
      
@@ -82,7 +99,7 @@ const addProduct = ()=>{
 }
 
 
-export default AddProduit;
+export default deleteProduit;
 
 const styles = StyleSheet.create({
     container: {
@@ -156,6 +173,15 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         
       },
+      list : {
+        padding : 20,
+  
+        borderWidth : 3,
+        flex: 1 ,
+        borderRadius: 15,
+        borderColor : '#009688',
+        justifyContent : 'space-between',
+          },
    
   });
 

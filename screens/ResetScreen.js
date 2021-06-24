@@ -36,7 +36,11 @@ if (email != ''){
     }
 //----------------------------------------
     const verifier = ()=>{
-        if (result == code) setUser(true);
+        if (result == code) {
+            setUser(true);
+        }else {
+            alert('le code n\'est pas juste');
+        }
     }
     //-------------------------------
     const createNewPassword = async() => {

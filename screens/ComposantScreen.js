@@ -12,7 +12,6 @@ const ComposantScreen  = (props) =>  {
   const [assign , setAssign] = useState(false);
   const [employes , setEmployes] = useState();
   const [itemId , setItemId] = useState();
-  const [etaat , setEtaat] = useState();
 
   const  {composantTitle , productTitle} =  props.route.params;
   
@@ -24,13 +23,14 @@ const ComposantScreen  = (props) =>  {
 
   const assignerTicket = async(itemId , employeEmail) => {
     await administrateur.assignerTicket(itemId , employeEmail , )
+    alert ('ticket assigné ;) ')
   }
   const start = async()=> {   setList( await administrateur.getTickets(productTitle , composantTitle))
     setEmployes(await administrateur.getAll('employe'))}
 
   useEffect(() => {
     start()
-}, []);
+}, [list]);
     return (
       assign ? <>
       <Text style = {styles.title}> Les Employés : </Text>
@@ -74,7 +74,10 @@ const ComposantScreen  = (props) =>  {
         style={{ height: 50, width: 150 }}
         onValueChange={async(etat) => {
           await administrateur.modifierEtatTicket(item._id, etat);
-          setEtaat(etat)
+          setTimeout(()=>{ item.etat = etat ; },40)
+
+        
+          
         }}
       >
         <Picker.Item label="Ouvert" value="ouvert" />

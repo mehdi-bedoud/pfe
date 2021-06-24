@@ -44,7 +44,7 @@ const start = async() => {
 }
 }
 
-useEffect(() => {start()}, [props]);
+useEffect(() => {start()}, [list]);
 
     return  (
        props.privilege == 'admin' ? 
@@ -111,6 +111,7 @@ useEffect(() => {start()}, [props]);
         selectedValue={item.etat} // l'etat courant du ticket lors de la bd
         style={{ height: 50, width: 150 }}
         onValueChange={async(etat) => {
+          item.etat = etat;
           await administrateur.modifierEtatTicket(item._id, etat);
         }}
       >

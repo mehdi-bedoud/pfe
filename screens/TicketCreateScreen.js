@@ -31,6 +31,7 @@ import User from '../classes/User';
     
 useEffect( ()=> {
   getProducts()
+
  
 } , [])
     return (
@@ -83,7 +84,7 @@ useEffect( ()=> {
       </Picker>
             <Text style = {styles.ticketTitle}>Composant : </Text>
             <Picker
-       //  selectedValue={selectedValue}
+               selectedValue={composant}
         style={{ height: 50, width: 150 ,margin : 10 ,paddingLeft : 10}}
         onValueChange={(itemValue) => setComposant(itemValue)}
       >
@@ -91,7 +92,7 @@ useEffect( ()=> {
          composants ? 
          
            composants.map( (s) => {
-                return <Picker.Item key={s.title} value={s.title} label={s.title} value = {s.title}/>
+                return <Picker.Item key={s.title}  label={s.title} value = {s.title}/>
             }) : null 
        }
       </Picker>

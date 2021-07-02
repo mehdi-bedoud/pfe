@@ -22,14 +22,17 @@ const ProductScreen  = (props) =>  {
   const getComposant = async()=>setList( await administrateur.getComposants(props.ProductTitle))
 
   useEffect(() => {
-    getComposant()
-}, []);
+    props.navigation.addListener('focus', () => {
+      getComposant();
+    });
+   
+}, [props.navigation]);
 
     return (
         <>
           <View style = {styles.action}>
      <TouchableOpacity onPress = {()=>{
-       setFilteredList(list.filter(e => e.title == value))
+       setFilteredList(list.filter(e =>  e.title.includes(value)))
        setSearch(true)
      }}>
      <Feather 
@@ -39,7 +42,7 @@ const ProductScreen  = (props) =>  {
                 />
      </TouchableOpacity>
                 <TextInput 
-                   placeholder = {value}
+                   placeholder = 'chercher'
                  
                    style = {styles.textInput} 
                    onChangeText = {(val)=>{
@@ -65,7 +68,7 @@ const ProductScreen  = (props) =>  {
        {
          !search ?
           <>
-           <Text style = {styles.title}> Les Composants : </Text>
+           {/* <Text style = {styles.title}> Les Composants : </Text> */}
    
    <View >
   <FlatList   keyExtractor = { e => e._id} data = {list} renderItem = {({item}) =>
@@ -73,7 +76,7 @@ const ProductScreen  = (props) =>  {
     <View style = {styles.listRow}>
        <TouchableOpacity onPress = {()=> {
          setComposantTitle(item.title)
-         props.navigation.navigate("ComposantScreen",{composantTitle : composantTitle , 
+         props.navigation.navigate("Les Tickets",{composantTitle : composantTitle , 
           productTitle : props.ProductTitle }) }}>
        <Text style = {styles.ticketTitle}> {item.title} </Text> 
        </TouchableOpacity>
@@ -85,7 +88,7 @@ const ProductScreen  = (props) =>  {
 </View>
          </> : 
          <>
-          <Text style = {styles.title}> Les Composants : </Text>
+          {/* <Text style = {styles.title}> Les Composants : </Text> */}
    
    <View >
   <FlatList   keyExtractor = { e => e._id} data = {filteredList} renderItem = {({item}) =>
@@ -93,7 +96,7 @@ const ProductScreen  = (props) =>  {
     <View style = {styles.listRow}>
        <TouchableOpacity onPress = {()=> {
          setComposantTitle(item.title)
-         props.navigation.navigate("ComposantScreen",{composantTitle : composantTitle , 
+         props.navigation.navigate("Les Tickets",{composantTitle : composantTitle , 
           productTitle : props.ProductTitle }) }}>
        <Text style = {styles.ticketTitle}> {item.title} </Text> 
        </TouchableOpacity>
@@ -162,7 +165,7 @@ const styles = StyleSheet.create({
     },
     action: {
       flexDirection: 'row',
-      marginTop: 25,
+      marginTop: 13,
       borderWidth: 1,
       borderColor: '#3D3D3D',
       borderRadius : 20,

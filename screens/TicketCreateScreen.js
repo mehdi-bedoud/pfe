@@ -84,8 +84,8 @@ useEffect( ()=> {
       </Picker>
             <Text style = {styles.ticketTitle}>Composant : </Text>
             <Picker
-               selectedValue={composant}
-        style={{ height: 50, width: 150 ,margin : 10 ,paddingLeft : 10}}
+              selectedValue={composant}
+        style={{ height: 50 ,margin : 10 ,paddingLeft : 10}}
         onValueChange={(itemValue) => setComposant(itemValue)}
       >
           {
@@ -100,7 +100,7 @@ useEffect( ()=> {
            <Text style = {styles.ticketTitle}>Priorité : </Text>
                  <Picker
    selectedValue={priorite}
-        style={{ height: 50, width: 150 ,margin : 10,paddingLeft : 10}}
+        style={{ height: 50 ,margin : 10,paddingLeft : 10}}
         onValueChange={(itemValue) => setPriorite(itemValue)}
       >
         <Picker.Item label="petite" value="petite" />

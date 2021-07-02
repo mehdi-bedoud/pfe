@@ -37,13 +37,16 @@ const ComposantScreen  = (props) =>  {
     setEmployes(await administrateur.getAll('employe'))}
 
   useEffect(() => {
-    start()
-}, [list]);
+    props.navigation.addListener('focus', () => {
+      start()
+    });
+    
+}, [list , props.navigation ]);
     return (
       <>
         <View style = {styles.action}>
      <TouchableOpacity onPress = {()=>{
-       setFilteredList(list.filter(e => e.title == value))
+       setFilteredList(list.filter(e =>  e.title.includes(value)))
        setSearch(true)
      }}>
      <Feather 
@@ -53,7 +56,7 @@ const ComposantScreen  = (props) =>  {
                 />
      </TouchableOpacity>
                 <TextInput 
-                   placeholder = {value}
+                   placeholder = 'chercher'
                  
                    style = {styles.textInput} 
                    onChangeText = {(val)=>{
@@ -92,6 +95,7 @@ const ComposantScreen  = (props) =>  {
             <TouchableOpacity style= {styles.appButtonContainer} onPress = {()=> {
                assignerTicket(itemId , item.email)
                setAssign(false);
+         props.navigation.navigate('Acceuil')
               
              }} >
              <Text style = {styles.appButtonText }>Assigner le Ticket</Text>
@@ -107,7 +111,7 @@ const ComposantScreen  = (props) =>  {
             
             </>:
               <>
-       <Text style = {styles.title}> Les Tickets : </Text>
+       {/* <Text style = {styles.title}> Les Tickets : </Text> */}
        
           <FlatList style={styles.container}  numColumns={colonne()} keyExtractor = { e => e._id} data = {list} renderItem = {({item}) =>
           <View style = {styles.list}>
@@ -119,13 +123,14 @@ const ComposantScreen  = (props) =>  {
               <Text style = {styles.ticketTitle}> Etat : </Text>  
               <Picker
               selectedValue={item.etat} // l'etat courant du ticket lors de la bd
-              style={{ height: 50, width: 150 }}
+              style={{ height: 50}}
               onValueChange={async(etat) => {
+                props.navigation.goBack();
+                alert ('etat mis à jour :)')
+            
                 await administrateur.modifierEtatTicket(item._id, etat);
-                setTimeout(()=>{ item.etat = etat ; },40)
-      
-              
-                
+               
+  
               }}
             >
               <Picker.Item label="Ouvert" value="ouvert" />
@@ -140,6 +145,10 @@ const ComposantScreen  = (props) =>  {
             <View style = {styles.listRow}>
               <Text style = {styles.ticketTitle}> Description : </Text>  
               <Text style = {styles.listItem}>{item.description} </Text>
+            </View>
+            <View style = {styles.listRow}>
+              <Text style = {styles.ticketTitle}> Créé par :  : </Text>  
+              <Text style = {styles.listItem}>{item.createdBy} </Text>
             </View>
            {
              item.assignedTo == '' ?  <TouchableOpacity style= {styles.appButtonContainer} onPress = {()=> {
@@ -194,7 +203,7 @@ const ComposantScreen  = (props) =>  {
             
             </>:
               <>
-       <Text style = {styles.title}> Les Tickets : </Text>
+       {/* <Text style = {styles.title}> Les Tickets : </Text> */}
        
           <FlatList style={styles.container}  numColumns={colonne()} keyExtractor = { e => e._id} data = {filteredList} renderItem = {({item}) =>
           <View style = {styles.list}>
@@ -206,13 +215,14 @@ const ComposantScreen  = (props) =>  {
               <Text style = {styles.ticketTitle}> Etat : </Text>  
               <Picker
               selectedValue={item.etat} // l'etat courant du ticket lors de la bd
-              style={{ height: 50, width: 150 }}
+              style={{ height: 50 }}
               onValueChange={async(etat) => {
+                props.navigation.goBack();
+                alert('etat mis à jour :)')
                 await administrateur.modifierEtatTicket(item._id, etat);
-                setTimeout(()=>{ item.etat = etat ; },40)
-      
               
-                
+            
+  
               }}
             >
               <Picker.Item label="Ouvert" value="ouvert" />
@@ -323,7 +333,7 @@ const styles = StyleSheet.create({
       },
       action: {
         flexDirection: 'row',
-        marginTop: 25,
+        marginTop: 13,
         borderWidth: 1,
         borderColor: '#3D3D3D',
         borderRadius : 20,

@@ -111,7 +111,7 @@ const addUser = ()=>{
             <View style = {styles.button}>
                 <TouchableOpacity style= {styles.appButtonContainer} onPress = {()=>{
                     addUser()
-                    navigation.goBack();
+                    navigation.navigate('Acceuil');
                 }} >
                     <Text style = {styles.appButtonText }>Ajouter un Client</Text>
                 </TouchableOpacity>
@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
     },
     button: {
         alignItems: 'center',
-        marginTop: 50
+        marginTop: 20
     },
     signIn: {
         width: '100%',

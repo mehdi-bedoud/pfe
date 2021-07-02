@@ -57,7 +57,7 @@ const getProducts = async() => {
                 <Text style = {{marginTop : 20 , fontSize : 20 ,  fontWeight : 'bold'}}>Nom de Produit </Text>
                 <Picker
       selectedValue={produit}
-        style={{ height: 50, width: 150 ,margin : 10,paddingLeft : 10}}
+        style={{ height: 50 ,margin : 10,paddingLeft : 10}}
         onValueChange={async(itemValue) => {
             setProduit(itemValue);
            setList( await administrateur.getComposants(itemValue))
@@ -77,10 +77,10 @@ const getProducts = async() => {
           <Text style = {{fontSize : 20 ,  fontWeight : 'bold' ,marginBottom : 10, marginTop : 10}}> Les composants : </Text>
           <Text style = {{paddingBottom : 5}}>cliquer sur le composant pour le supprimer</Text>
              <FlatList   keyExtractor = { e => e._id} data = {list} renderItem = {({item}) =>
-   <TouchableOpacity onPress = {async()=>{
+   <TouchableOpacity  style = {{marginBottom : 10}}onPress = {async()=>{
        await administrateur.deleteComposant(item.title)
       setProduits(produits.concat(['']))
-      navigation.goBack();
+      navigation.navigate('Acceuil');
        alert('composant supprimé ;)')
    }}>
       <View style = {styles.list}>
@@ -96,7 +96,7 @@ const getProducts = async() => {
       }
 
             <View style = {styles.button}>
-                <TouchableOpacity style= {styles.appButtonContainer} onPress = {()=>navigation.goBack()} >
+                <TouchableOpacity style= {styles.appButtonContainer} onPress = {()=>navigation.navigate('Acceuil') } >
                     <Text style = {styles.appButtonText }>Retour</Text>
                 </TouchableOpacity>
             </View >

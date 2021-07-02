@@ -62,13 +62,13 @@ const addProduct = ()=>{
             <View style = {styles.button}>
                 <TouchableOpacity style= {styles.appButtonContainer} onPress = {()=>{
                     addProduct();
-                    props.navigation.goBack();
+                    props.navigation.navigate('Acceuil');
                 }} >
                     <Text style = {styles.appButtonText }>Ajouter un Produit</Text>
                 </TouchableOpacity>
             </View >
             <View style = {styles.button}>
-                <TouchableOpacity style= {styles.appButtonContainer} onPress = {()=>props.navigation.goBack()} >
+                <TouchableOpacity style= {styles.appButtonContainer} onPress = {()=>props.navigation.navigate('Acceuil') } >
                     <Text style = {styles.appButtonText }>Retour</Text>
                 </TouchableOpacity>
             </View >

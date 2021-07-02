@@ -10,8 +10,8 @@ import React from 'react';
 const Tab = createMaterialBottomTabNavigator();
 
 export default function MyTabs(props) {
-  
-  let admin = props.admin;
+
+ 
   return (
     <Tab.Navigator
       initialRouteName="Acceuil"
@@ -20,7 +20,7 @@ export default function MyTabs(props) {
     >
       <Tab.Screen
         name="Acceuil"
-        children = { () => <HomeScreen {...props} admin = {admin} />}
+        children = { (h) => <HomeScreen {...props} h = {h} />}
         options={{
           tabBarLabel: 'Acceuil',
           tabBarIcon: ({ color }) => (

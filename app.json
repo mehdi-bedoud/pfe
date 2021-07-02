@@ -1,12 +1,14 @@
+
 {
-  "name": "Sol",
-  "displayName": "Sol",
   "expo": {
-    "name": "Sol",
-    "slug": "Sol",
-    "version": "1.0.0",
-    "assetBundlePatterns": [
-      "**/*"
-    ]
+   "name": "Ticketly",
+   "icon": "./assets/help.png",
+   "version": "1.0.0",
+   "sdkVersion": "41.0.0",
+   "slug": "usthb",
+   "android": {
+     "package": "com.usthb.Ticketly",
+     "versionCode": 1
+   }
   }
 }

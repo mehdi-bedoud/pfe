@@ -24,7 +24,7 @@ const addProduct = async()=>{
     if (title.length != 0 )
     var data =await administrateur.addComposant(title , produit)
     if (data ) alert ('Composant ajouté')
-    else alert ('erreur')
+    else alert ('Composant existe déja')
 }
 const getProducts = async() => {
     setProduits(await administrateur.getAllProducts())
@@ -70,7 +70,7 @@ const getProducts = async() => {
                 <Text style = {{marginTop : 20}}>Nom de Produit </Text>
                 <Picker
       selectedValue={produit}
-        style={{ height: 50, width: 150 ,margin : 10,paddingLeft : 10}}
+        style={{ height: 50, margin : 10,paddingLeft : 10}}
         onValueChange={(itemValue) => setProduit(itemValue)}
       >
         
@@ -88,13 +88,13 @@ const getProducts = async() => {
             <View style = {styles.button}>
                 <TouchableOpacity style= {styles.appButtonContainer} onPress = {()=>{
                     addProduct();
-                    navigation.goBack();
+                    navigation.navigate('Acceuil');
                 }} >
                     <Text style = {styles.appButtonText }>Ajouter le Composant</Text>
                 </TouchableOpacity>
             </View >
             <View style = {styles.button}>
-                <TouchableOpacity style= {styles.appButtonContainer} onPress = {()=>navigation.goBack()} >
+                <TouchableOpacity style= {styles.appButtonContainer} onPress = {()=>navigation.navigate('Acceuil') } >
                     <Text style = {styles.appButtonText }>Retour</Text>
                 </TouchableOpacity>
             </View >

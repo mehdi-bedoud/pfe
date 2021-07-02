@@ -9,6 +9,8 @@ const EmployeList = (props)=>{
   const [value , setValue] = useState();
   const [search , setSearch] = useState(false);
   const [filteredList , setFilteredList] = useState();
+  const [deleted , setDeleted] = useState(false)
+
   const remplirValue = (val)=>{
     setValue(val)
    
@@ -17,18 +19,29 @@ const EmployeList = (props)=>{
     setList(await administrateur.getAll('employe'))
   }
   
-
+  const  supprimer = async(email) => {
+    await administrateur.deleteUser(email)
+    alert ('employé supprimé ;) ')
+    setDeleted(!deleted);
+    props.navigation.navigate('Acceuil');
+   
+  }
 
 
 
     useEffect (()=> {
-getEmployes();
-    },[search])
+      props.navigation.addListener('focus', () => {
+        getEmployes();
+      });
+  
+
+
+    },[search , deleted , props.navigation])
 return (
     <>
            <View style = {styles.action}>
      <TouchableOpacity onPress = {()=>{
-       setFilteredList(list.filter(e => e.email == value))
+       setFilteredList(list.filter(e => e.email.includes(value)))
        setSearch(true)
      }}>
      <Feather 
@@ -38,7 +51,7 @@ return (
                 />
      </TouchableOpacity>
                 <TextInput 
-                   placeholder = {value}
+                   placeholder = 'chercher'
                  
                    style = {styles.textInput} 
                    onChangeText = {(val)=>{
@@ -73,6 +86,12 @@ return (
         <Text style = {styles.ticketTitle}> email : </Text>  
         <Text style = {styles.listItem}>{item.email} </Text>
       </View>
+      <TouchableOpacity style= {styles.appButtonContainer} onPress = {()=> {
+             supprimer(item.email)
+              
+             }} >
+             <Text style = {styles.appButtonText }>Supprimer l'mployé</Text>
+         </TouchableOpacity>
 
     </View>
 
@@ -89,6 +108,12 @@ return (
             <Text style = {styles.ticketTitle}> email : </Text>  
             <Text style = {styles.listItem}>{item.email} </Text>
           </View>
+          <TouchableOpacity style= {styles.appButtonContainer} onPress = {()=> {
+              supprimer(item.email)
+              
+             }} >
+             <Text style = {styles.appButtonText }>Supprimer l'mployé</Text>
+         </TouchableOpacity>
     
         </View> 
     
@@ -99,7 +124,7 @@ return (
       </>
 }
       <View style = {styles.button}>
-                <TouchableOpacity style= {styles.appButtonContainer} onPress = {()=>props.navigation.goBack()} >
+                <TouchableOpacity style= {styles.appButtonContainer} onPress = {()=>props.navigation.navigate('Acceuil') } >
                     <Text style = {styles.appButtonText }>Retour</Text>
                 </TouchableOpacity>
             </View >
@@ -165,6 +190,7 @@ const styles = StyleSheet.create({
       flexDirection : 'row',
     },
     appButtonContainer: {
+      marginTop : 14,
       elevation: 8,
       backgroundColor: "#009688",
       borderRadius: 45,

@@ -23,12 +23,12 @@ const [produit , setProduit] = useState();
 const [produits , setProduits] = useState();
 const [list , setList] = useState();
 
-const addProduct = async()=>{
-    if (title.length != 0 )
-    var data =await administrateur.addComposant(title , produit)
-    if (data ) alert ('Composant ajouté')
-    else alert ('erreur')
-}
+// const addProduct = async()=>{
+//     if (title.length != 0 )
+//     var data =await administrateur.addComposant(title , produit)
+//     if (data ) alert ('Composant ajouté')
+//     else alert ('erreur')
+// }
 const getProducts = async() => {
     setProduits(await administrateur.getAllProducts())
 }
@@ -75,7 +75,7 @@ const getProducts = async() => {
                 <TouchableOpacity style= {styles.appButtonContainer} onPress = {async()=>{
                     await administrateur.deleteProduit(produit)
                     setProduits([]);
-                    navigation.goBack();
+                    navigation.navigate('Acceuil');
                     alert('produit supprimé ;)')
                 }} >
                     <Text style = {styles.appButtonText }>Supprimer le Produit</Text>
@@ -83,7 +83,7 @@ const getProducts = async() => {
             </View >
 
             <View style = {styles.button}>
-                <TouchableOpacity style= {styles.appButtonContainer} onPress = {()=>navigation.goBack()} >
+                <TouchableOpacity style= {styles.appButtonContainer} onPress = {()=>navigation.navigate('Acceuil') } >
                     <Text style = {styles.appButtonText }>Retour</Text>
                 </TouchableOpacity>
             </View >

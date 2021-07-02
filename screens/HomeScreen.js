@@ -19,6 +19,7 @@ import Feather from 'react-native-vector-icons/Feather';
 var ProductTitle ;
 
  function HomeScreen(props){
+
 const [list ,setList] = useState([]); 
 const [value , setValue] = useState();
 const [search , setSearch] = useState(false);
@@ -52,13 +53,17 @@ const start = async() => {
 }
 }
 
-useEffect(() => {start()}, [list]);
+useEffect(() => {
+
+start();
+
+}, [list]);
 
     return  (
       <>
             <View style = {styles.action}>
      <TouchableOpacity onPress = {()=>{
-       setFilteredList(list.filter(e => e.title == value))
+       setFilteredList(list.filter(e =>  e.title.includes(value)))
        setSearch(true)
      }}>
      <Feather 
@@ -68,7 +73,7 @@ useEffect(() => {start()}, [list]);
                 />
      </TouchableOpacity>
                 <TextInput 
-                   placeholder = {value}
+                   placeholder = 'chercher'
                  
                    style = {styles.textInput} 
                    onChangeText = {(val)=>{
@@ -104,7 +109,7 @@ useEffect(() => {start()}, [list]);
         <FlatList  numColumns={colonne()} keyExtractor = { e => e._id} data = {list} renderItem = {({item}) =>
       <TouchableOpacity onPress = {()=>{
         setProductTitle(item.title);
-       props.navigation.navigate('ProductScreen')
+       props.navigation.navigate('Les Composants')
       }}>
          <View style = {styles.list}>
          <View style = {styles.listRow}>
@@ -122,7 +127,7 @@ useEffect(() => {start()}, [list]);
          <>
          <Text style = {styles.title}> Les Tickets Créés : </Text>
       
-        <View style={styles.container2}>
+        
        <FlatList style={styles.container} numColumns={colonneTicket()} keyExtractor = { e => e._id} data = {list} renderItem = {({item}) =>
        <View style = {styles.list}>
          <View style = {styles.listRow}>
@@ -140,14 +145,14 @@ useEffect(() => {start()}, [list]);
        </View>
    
          }/>
-   </View>
+  
        
    </>  : props.privilege == 'employe' ? 
     <>
     <Text style = {styles.title}> Les Tickets Assignés: </Text>
        
-        <View style={styles.container2}>
-       <FlatList style={styles.container} numColumns={colonneTicket()} keyExtractor = { e => e._id} data = {list} renderItem = {({item}) =>
+       
+       <FlatList style={styles.container} keyExtractor = { e => e._id} data = {list} renderItem = {({item}) =>
        <View style = {styles.list}>
          <View style = {styles.listRow}>
            <Text style = {styles.ticketTitle}> Titre : </Text>  
@@ -157,10 +162,12 @@ useEffect(() => {start()}, [list]);
            <Text style = {styles.ticketTitle}> Etat : </Text>  
            <Picker
            selectedValue={item.etat} // l'etat courant du ticket lors de la bd
-           style={{ height: 50, width: 150 }}
+           style={{ height: 50 }}
            onValueChange={async(etat) => {
-             item.etat = etat;
+             props.navigation.navigate('Acceuil')
+             alert ('etat mis a jour')
              await administrateur.modifierEtatTicket(item._id, etat);
+             
            }}
          >
            <Picker.Item label="Assigné" value="assigné" />
@@ -176,7 +183,7 @@ useEffect(() => {start()}, [list]);
        </View>
    
          }/>
-   </View>
+
    
    
    
@@ -195,7 +202,7 @@ useEffect(() => {start()}, [list]);
         <FlatList  numColumns={colonne()} keyExtractor = { e => e._id} data = {filteredList} renderItem = {({item}) =>
       <TouchableOpacity onPress = {()=>{
         setProductTitle(item.title);
-       props.navigation.navigate('ProductScreen')
+       props.navigation.navigate('Les Composants')
       }}>
          <View style = {styles.list}>
          <View style = {styles.listRow}>
@@ -213,7 +220,7 @@ useEffect(() => {start()}, [list]);
          <>
          <Text style = {styles.title}> Les Tickets Créés : </Text>
       
-        <View style={styles.container2}>
+      
        <FlatList style={styles.container} numColumns={colonneTicket()} keyExtractor = { e => e._id} data = {filteredList} renderItem = {({item}) =>
        <View style = {styles.list}>
          <View style = {styles.listRow}>
@@ -231,13 +238,13 @@ useEffect(() => {start()}, [list]);
        </View>
    
          }/>
-   </View>
+  
        
    </>  : props.privilege == 'employe' ? 
     <>
     <Text style = {styles.title}> Les Tickets Assignés: </Text>
        
-        <View style={styles.container2}>
+        
        <FlatList style={styles.container} numColumns={colonneTicket()} keyExtractor = { e => e._id} data = {filteredList} renderItem = {({item}) =>
        <View style = {styles.list}>
          <View style = {styles.listRow}>
@@ -248,11 +255,13 @@ useEffect(() => {start()}, [list]);
            <Text style = {styles.ticketTitle}> Etat : </Text>  
            <Picker
            selectedValue={item.etat} // l'etat courant du ticket lors de la bd
-           style={{ height: 50, width: 150 }}
+           style={{ height: 50 }}
            onValueChange={async(etat) => {
-             item.etat = etat;
-             await administrateur.modifierEtatTicket(item._id, etat);
-           }}
+            props.navigation.navigate('Acceuil')
+            alert ('etat mis a jour')
+            await administrateur.modifierEtatTicket(item._id, etat);
+            
+          }}
          >
            <Picker.Item label="Assigné" value="assigné" />
            <Picker.Item label="Résolu" value="résolu" />
@@ -267,7 +276,7 @@ useEffect(() => {start()}, [list]);
        </View>
    
          }/>
-   </View>
+ 
    
    
    
@@ -301,7 +310,7 @@ useEffect(() => {start()}, [list]);
 
    }
  }  />
-   <homeStack.Screen name = 'ProductScreen' children = { (hh) => <ProductScreen {...props  }{...hh} ProductTitle =  {ProductTitle}   />} 
+   <homeStack.Screen name = 'Les Composants' children = { (hh) => <ProductScreen {...props  }{...hh} ProductTitle =  {ProductTitle}   />} 
    options = {
    {
      headerStyle : {
@@ -317,7 +326,7 @@ useEffect(() => {start()}, [list]);
    }
  } 
  />
-<homeStack.Screen name = 'ComposantScreen' children = { (hh ) => <ComposantScreen {...props} {...hh} />} options = {
+<homeStack.Screen name = 'Les Tickets' children = { (hh ) => <ComposantScreen {...props} {...hh} />} options = {
    {
      headerStyle : {
        backgroundColor : '#009387',
@@ -381,10 +390,11 @@ const styles = StyleSheet.create({
   },
   container2 : {
     flexDirection : 'row',
+    marginBottom : 100,
   },
   action: {
     flexDirection: 'row',
-    marginTop: 25,
+    marginTop: 13,
     borderWidth: 1,
     borderColor: '#3D3D3D',
     borderRadius : 20,

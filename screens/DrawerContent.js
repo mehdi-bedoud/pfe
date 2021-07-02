@@ -27,16 +27,10 @@ export function DContent (props) {
 
   const {signOut , name , privilege , email} = React.useContext(AuthContext);
     const paperTheme = useTheme();
-    const [isDarkTheme, setIsDarkTheme] = useState(false);
     const [gclient, setGclient] = useState(false);
     const [gemploye , setGemploye] = useState(false);
     const [gprod , setGprod] = useState(false);
  
-
-    const toggleTheme = () => {
-     
-       
-    }
 
     
     return (
@@ -45,9 +39,7 @@ export function DContent (props) {
             <View style = {styles.drawerContent}>
             <View style = {styles.userInfoSection}>
               <View style = {{flexDirection : 'row' , marginTop : 15 }}>
-                  <Avatar.Image source = {{
-                      uri :'https://scontent.fqsf1-1.fna.fbcdn.net/v/t1.6435-9/105302996_3000515003407569_4753253622044843753_n.jpg?_nc_cat=111&ccb=1-3&_nc_sid=09cbfe&_nc_eui2=AeG6vva93D6pMvScKuE9uDAJWma1mucI77daZrWa5wjvtxi9Ja1j2rbMbMHdRbovlAzOMaiYKesuINgQ4GpfLbhW&_nc_ohc=2FzdIJ8HA40AX-njO7F&_nc_ht=scontent.fqsf1-1.fna&oh=f4a8beab5505de281f562fc449faf958&oe=60D2BA15' ,
-                 }}
+                  <Avatar.Image source={require('../assets/profile-user.png')}
                  size = {50}
                   />
                   <View style = {{marginLeft : 15 , flexDirection: 'column'}}>
@@ -267,16 +259,7 @@ export function DContent (props) {
 
 
               </Drawer.Section>
-              <Drawer.Section title="Preferences">
-                        <TouchableRipple onPress={() => {toggleTheme()}}>
-                            <View style={styles.preference}>
-                                <Text>Thème sombre</Text>
-                                <View pointerEvents="none">
-                                    <Switch value={isDarkTheme}/>
-                                </View>
-                            </View>
-                        </TouchableRipple>
-                    </Drawer.Section>
+         
             </View>
           </DrawerContentScrollView>
           <Drawer.Section style = {styles.bottomDrawerSection} >

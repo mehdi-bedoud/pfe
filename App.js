@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { StyleSheet , ActivityIndicator ,View} from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer  } from '@react-navigation/native';
+
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import Tabs from './screens/TabScreen'
 import {DContent} from './screens/DrawerContent';
@@ -32,9 +33,7 @@ import DeleteProduit from './screens/deleteProduct';
 
 
 const Drawer = createDrawerNavigator();
-var admin = new administrateur();
-var clientt = new client();
-var employee = new employe();
+
 var userr = new User();  // pour appeler les fcts  
 export default function App() {
 
@@ -73,11 +72,7 @@ const  loginReducer = (state ,action) => {
           privilege : userr.privilege,
           email : userr.email
         })
-        switch(userr.privilege){
-          case 'admin' : admin = userr ; 
-          case 'client' : clientt = userr;
-          case 'employe' : employee = userr ; 
-              }
+     
        await AsyncStorage.setItem('name' , userr.name);
        await AsyncStorage.setItem('email' , userr.email);
        await AsyncStorage.setItem('privilege' , userr.privilege);
@@ -95,12 +90,7 @@ const  loginReducer = (state ,action) => {
      
    
     },
-    signUp: () => {
-      if (userr.privilege == 'admin')  {
-        
-      }
-   
-    },
+
   
 
 
@@ -138,28 +128,31 @@ if( loginState.isLoading ) {
   );
 }
   return (
-   <AuthContext.Provider value = {authContext}>
+
+      <AuthContext.Provider value = {authContext}>
     
-      <NavigationContainer>
-      {
-       !loginState.name ?  <RootStackk/>  :
+    <NavigationContainer >
+    {
+     !loginState.name ?  <RootStackk/>  :
 <Drawer.Navigator drawerContent = { props => <DContent { ...props} privilege = {loginState.privilege} email = {loginState.email} />}    >
-      <Drawer.Screen   children = { props => <Tabs {...props} privilege = {loginState.privilege} email = {loginState.email} />}name = "MainTab"  />
-      <Drawer.Screen   children = {props =><ProfileScreen {...props} email = {loginState.email}/>} name="Profile" />
-      <Drawer.Screen   children = {props =><SignUpScreen {...props}/>} name="SignUpScreen" />
-      <Drawer.Screen   children = {props =><ClientListScreen {...props}/>} name="ListClient" />
-      <Drawer.Screen   children = {props =><EmployeListScreen {...props}/>} name="ListEmploye" />
-      <Drawer.Screen   children = {props =><AddClient {...props}/>} name="AddClient" />
-      <Drawer.Screen   children = {props =><AddEmploye {...props}/>} name="AddEmploye" />
-      <Drawer.Screen   children = {props =><AddComposant {...props}/>} name="addComposant" />
-      <Drawer.Screen   children = {props =><AddProduit {...props}/>} name="addProduit" />
-      <Drawer.Screen   children = {props =><DeleteComposant {...props}/>} name="deleteComposant" />  
-      <Drawer.Screen   children = {props =><DeleteProduit {...props}/>} name="deleteProduit" />  
-  
-    </Drawer.Navigator> 
-    }
-  </NavigationContainer>
-   </AuthContext.Provider> 
+    <Drawer.Screen   children = { props => <Tabs {...props} privilege = {loginState.privilege} email = {loginState.email} />}name = "MainTab"  />
+    <Drawer.Screen   children = {props =><ProfileScreen {...props} email = {loginState.email}/>} name="Profile" />
+    <Drawer.Screen   children = {props =><SignUpScreen {...props}/>} name="SignUpScreen" />
+    <Drawer.Screen   children = {props =><ClientListScreen {...props}/>} name="ListClient" />
+    <Drawer.Screen   children = {props =><EmployeListScreen {...props}/>} name="ListEmploye" />
+    <Drawer.Screen   children = {props =><AddClient {...props}/>} name="AddClient" />
+    <Drawer.Screen   children = {props =><AddEmploye {...props}/>} name="AddEmploye" />
+    <Drawer.Screen   children = {props =><AddComposant {...props}/>} name="addComposant" />
+    <Drawer.Screen   children = {props =><AddProduit {...props}/>} name="addProduit" />
+    <Drawer.Screen   children = {props =><DeleteComposant {...props}/>} name="deleteComposant" />  
+    <Drawer.Screen   children = {props =><DeleteProduit {...props}/>} name="deleteProduit" />  
+
+  </Drawer.Navigator> 
+  }
+</NavigationContainer>
+ </AuthContext.Provider> 
+
+   
    );
 }
 

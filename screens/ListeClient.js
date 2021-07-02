@@ -1,29 +1,45 @@
 import React, { useEffect , useState } from 'react';
-import {Text , StyleSheet , View , FlatList, TextInput,TouchableOpacity} from 'react-native';
+import {Text , StyleSheet , View , FlatList, TouchableOpacity , TextInput} from 'react-native';
 import administrateur from '../classes/administrateur';
 import Feather from 'react-native-vector-icons/Feather';
+
+
 const ClientList = (props)=>{
   const [list , setList] = useState();
+  const [value , setValue] = useState();
   const [search , setSearch] = useState(false);
   const [filteredList , setFilteredList] = useState();
-  const [value , setValue] = useState();
+  const [deleted , setDeleted] = useState(false)
+
   const remplirValue = (val)=>{
     setValue(val)
    
   }
-
   const getClients = async()=>{
     setList(await administrateur.getAll('client'))
   }
+  
+  const  supprimer = async(email) => {
+    await administrateur.deleteUser(email)
+    alert ('Client supprimé ;) ')
+    setDeleted(!deleted)
+    props.navigation.navigate('Acceuil');
+
+  }
+
+
 
     useEffect (()=> {
-getClients();
-    },[])
+      props.navigation.addListener('focus', () => {
+        getClients();
+      });
+ 
+    },[search , deleted , props.navigation])
 return (
     <>
-     <View style = {styles.action}>
+           <View style = {styles.action}>
      <TouchableOpacity onPress = {()=>{
-       setFilteredList(list.filter(e => e.email == value))
+       setFilteredList(list.filter(e => e.email.includes(value)))
        setSearch(true)
      }}>
      <Feather 
@@ -33,7 +49,7 @@ return (
                 />
      </TouchableOpacity>
                 <TextInput 
-                   placeholder = {value}
+                   placeholder = 'chercher'
                  
                    style = {styles.textInput} 
                    onChangeText = {(val)=>{
@@ -54,29 +70,11 @@ return (
          
                  </TouchableOpacity>
             </View>
-<Text style = {styles.title}>Liste des Clients : </Text>
+            <Text style = {styles.title}>Liste des Clients : </Text>
+
 {
-  !search ? <> <FlatList style={styles.container} keyExtractor = { e => e._id} data = {list} renderItem = {({item}) =>
-  <View style = {styles.list}>
-    <View style = {styles.listRow}>
-      <Text style = {styles.ticketTitle}> Nom Complet : </Text>  
-      <Text style = {styles.listItem}>{item.name} </Text>
-    </View>
-    <View style = {styles.listRow}>
-      <Text style = {styles.ticketTitle}> email : </Text>  
-      <Text style = {styles.listItem}>{item.email} </Text>
-    </View>
-
-  </View>
-
-    }/>
-    <View style = {styles.button}>
-              <TouchableOpacity style= {styles.appButtonContainer} onPress = {()=>props.navigation.goBack()} >
-                  <Text style = {styles.appButtonText }>Retour</Text>
-              </TouchableOpacity>
-          </View ></> :
-           <>
-          <FlatList style={styles.container} keyExtractor = { e => e._id} data = {filteredList} renderItem = {({item}) =>
+  !search ?
+  <FlatList  keyExtractor = { e => e._id} data = {list} renderItem = {({item}) =>
     <View style = {styles.list}>
       <View style = {styles.listRow}>
         <Text style = {styles.ticketTitle}> Nom Complet : </Text>  
@@ -86,17 +84,48 @@ return (
         <Text style = {styles.ticketTitle}> email : </Text>  
         <Text style = {styles.listItem}>{item.email} </Text>
       </View>
+      <TouchableOpacity style= {styles.appButtonContainer} onPress = {()=> {
+             supprimer(item.email)
+              
+             }} >
+             <Text style = {styles.appButtonText }>Supprimer le Client</Text>
+         </TouchableOpacity>
 
     </View>
 
       }/>
+      : <>
+       
+        <FlatList  keyExtractor = { e => e._id} data = {filteredList} renderItem = {({item}) => 
+       <View style = {styles.list}>
+          <View style = {styles.listRow}>
+            <Text style = {styles.ticketTitle}> Nom Complet : </Text>  
+            <Text style = {styles.listItem}>{item.name} </Text>
+          </View>
+          <View style = {styles.listRow}>
+            <Text style = {styles.ticketTitle}> email : </Text>  
+            <Text style = {styles.listItem}>{item.email} </Text>
+          </View>
+          <TouchableOpacity style= {styles.appButtonContainer} onPress = {()=> {
+              supprimer(item.email)
+              
+             }} >
+             <Text style = {styles.appButtonText }>Supprimer l'mployé</Text>
+         </TouchableOpacity>
+    
+        </View> 
+    
+   
+
+      }/>
+      
+      </>
+}
       <View style = {styles.button}>
-                <TouchableOpacity style= {styles.appButtonContainer} onPress = {()=>props.navigation.goBack()} >
+                <TouchableOpacity style= {styles.appButtonContainer} onPress = {()=>props.navigation.navigate('Acceuil') } >
                     <Text style = {styles.appButtonText }>Retour</Text>
                 </TouchableOpacity>
-            </View ></>
-}
-
+            </View >
 
 
 </>
@@ -109,7 +138,7 @@ export default ClientList;
 
 const styles = StyleSheet.create({
     title : {
-      fontSize : 30,
+      fontSize : 25,
       fontWeight : 'bold',
       margin: 10,
     },
@@ -136,7 +165,7 @@ const styles = StyleSheet.create({
     },
   
     ticketTitle :{
-      fontSize : 30,
+      fontSize : 22,
       fontWeight : 'bold',
        paddingTop : 5 ,
      
@@ -146,12 +175,9 @@ const styles = StyleSheet.create({
         width : '100%'
     },
     container : {
-      margin : 20,
-      flexDirection : 'column',
-      padding : 20,
-      borderWidth : 1,
-      borderRadius : 20,
-      borderColor : '#009387',
+
+      flexDirection : 'row',
+ 
     },
     button: {
       alignItems: 'center',
@@ -162,6 +188,7 @@ const styles = StyleSheet.create({
       flexDirection : 'row',
     },
     appButtonContainer: {
+      marginTop : 14,
       elevation: 8,
       backgroundColor: "#009688",
       borderRadius: 45,

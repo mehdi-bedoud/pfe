@@ -42,10 +42,10 @@ export default class administrateur extends User   {
     }
  
   
-     async  deleteUser(email){ // suppression d'utilisateur soit client soit
+    static async  deleteUser(email){ // suppression d'utilisateur soit client soit
       try {
-const data = await Axios.delete('/api/users/'+email);
-if (data) alert ('user removed ')
+const {data} = await Axios.get('/api/users/'+email);
+
 
       }catch(error){
       console.log (error);
@@ -70,7 +70,7 @@ if (data) alert ('user removed ')
         alert ('produit ajouté')
         return true ;
       }
-      alert('probleme lors de l\'ajout du produit') ; 
+      alert('produit existe déja') ; 
 
     }
     static async deleteProduit (title){  // suppression produit

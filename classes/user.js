@@ -8,8 +8,6 @@ export default class User {
         this.email = email;
         this.password = password ; 
         this.privilege = privilege;
-
-
     }
     static async setEmail(email1, email2){
       try{
@@ -23,15 +21,6 @@ export default class User {
      
     }
 
- 
- 
-
-    //-------------------------------
-
-
-
- 
-
    static async Login (email , password){
        try{
         const {data} = await Axios.post('/api/users/signin', {email: email , password: password}   )
@@ -43,10 +32,7 @@ export default class User {
            console.log(err)
        }  
        return null;
-    }
-
-    
-
+    } 
    static async Logout(){
        try {
         await    AsyncStorage.removeItem('name');
@@ -58,8 +44,6 @@ export default class User {
        }
    }
 
-
-
   static  async createTicket(title , description , adresse , produit , composant , etat , priorite , createdBy){ //creation de ticket
 try {
   const  data = await Axios.post('/api/tickets/createticket' , {title , description , adresse , produit , composant , etat , priorite,createdBy});
@@ -68,7 +52,6 @@ try {
   alert ('erreur');
 }
 }
-
 
 static async reset(email){
   try{
@@ -88,6 +71,15 @@ static async valideReset(email , password){
     return (data)  // return true 
   }
   return null
+}
+
+static async getCreatedTickets(email) {
+  try {
+    const {data} = await Axios.post('/api/tickets/created',{email})
+    return data
+  }catch(error){
+    alert (error)
+  }
 }
 
 };

@@ -105,13 +105,13 @@ const addUser = ()=>{
             <View style = {styles.button}>
                 <TouchableOpacity style= {styles.appButtonContainer} onPress = {()=>{
                     addUser()
-                    navigation.goBack();
+                    navigation.navigate('Acceuil'); 
                 }} >
                     <Text style = {styles.appButtonText }>Ajouter un Employé</Text>
                 </TouchableOpacity>
             </View >
             <View style = {styles.button}>
-                <TouchableOpacity style= {styles.appButtonContainer} onPress = {()=>navigation.goBack()} >
+                <TouchableOpacity style= {styles.appButtonContainer} onPress = {()=>navigation.navigate('Acceuil') } >
                     <Text style = {styles.appButtonText }>Retour</Text>
                 </TouchableOpacity>
             </View >
@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
     },
     button: {
         alignItems: 'center',
-        marginTop: 50
+        marginTop: 20
     },
     signIn: {
         width: '100%',

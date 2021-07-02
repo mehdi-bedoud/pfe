@@ -1,5 +1,5 @@
 import user from './User';
-import Axios from './Axios';
+
 
 export default class client extends user{
   
@@ -7,15 +7,5 @@ export default class client extends user{
         super(name , email , password , 'client' ) 
 
     }
-
-   static async getCreatedTickets(email) {
-    try {
-      const {data} = await Axios.post('/api/tickets/created',{email})
-      return data
-    }catch(error){
-      alert (error)
-    }
-  }
-
 
 }
